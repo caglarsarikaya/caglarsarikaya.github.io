@@ -1,0 +1,78 @@
+:root {
+  --primary-color: #0077cc;
+  --secondary-color: #005fa3;
+  --text-color: #333;
+  --text-light: #555;
+  --text-muted: #777;
+  --background-color: #ffffff;
+  --background-alt: #f8f9fa;
+  --border-color: #e0e0e0;
+  --shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.1);
+  --font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--secondary-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+/* Utility classes */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section-padding {
+  padding: 5rem 0;
+}
+
+/* Remove default margin from #root */
+#root {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}

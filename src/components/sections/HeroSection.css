@@ -1,0 +1,152 @@
+.hero {
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 90px);
+  display: flex;
+  align-items: center;
+}
+
+.hero .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-text h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.hero-text h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #0077cc;
+  margin-bottom: 1.5rem;
+}
+
+.hero-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  text-align: justify;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.8rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #0077cc;
+  color: white;
+  border: 2px solid #0077cc;
+}
+
+.btn-primary:hover {
+  background-color: #0066b3;
+  border-color: #0066b3;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #0077cc;
+  border: 2px solid #0077cc;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(0, 119, 204, 0.05);
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.placeholder-img {
+  width: 300px;
+  height: 300px;
+  background-color: #e0e7ff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.placeholder-img span {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #0077cc;
+}
+
+@media screen and (max-width: 992px) {
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .hero-text p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .cta-buttons {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hero {
+    padding-top: 5rem;
+  }
+  
+  .hero-content {
+    flex-direction: column-reverse;
+  }
+  
+  .hero-image {
+    margin-bottom: 2rem;
+  }
+  
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-text h2 {
+    font-size: 1.2rem;
+  }
+  
+  .placeholder-img {
+    width: 220px;
+    height: 220px;
+  }
+} 

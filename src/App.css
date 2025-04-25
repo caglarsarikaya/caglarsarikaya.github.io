@@ -1,0 +1,144 @@
+/* Main app container styles */
+.app {
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+  color: #333;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Scrollbar styling */
+.app::-webkit-scrollbar {
+  width: 10px;
+  position: absolute;
+  right: 0;
+}
+
+.app::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.app::-webkit-scrollbar-thumb {
+  background: #0077cc;
+  border-radius: 5px;
+}
+
+.app::-webkit-scrollbar-thumb:hover {
+  background: #005fa3;
+}
+
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f8f9fa;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+main {
+  padding-top: 70px; /* Add padding to account for fixed header */
+}
+
+/* Full-screen section styling */
+section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 50px 0 50px 0;
+  position: relative;
+}
+
+/* Footer section styling */
+.footer-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+.mt-5 { margin-top: 2.5rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mb-5 { margin-bottom: 2.5rem; }
+
+/* For smooth scrolling behavior when clicking on anchor links */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Add padding to ensure anchors scroll below the fixed header */
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}

@@ -1,0 +1,125 @@
+.about-me {
+  background-color: var(--section-bg);
+  padding-top: 80px;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.about-me .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  width: 100%;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  width: 80px;
+  height: 4px;
+  background-color: #0077cc;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.summary-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.summary-content p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+.summary-content p:last-child {
+  margin-bottom: 0;
+}
+
+.about-me-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.about-text p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+.skills h3 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.skill-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.skill-category {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skill-category:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.skill-icon {
+  font-size: 2.5rem;
+  color: #0077cc;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.skill-category h4 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.skill-category ul {
+  padding-left: 1.2rem;
+}
+
+.skill-category li {
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+@media screen and (max-width: 768px) {
+  .skill-categories {
+    grid-template-columns: 1fr;
+  }
+} 

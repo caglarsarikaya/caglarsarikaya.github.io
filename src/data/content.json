@@ -1,0 +1,152 @@
+{
+  "heroSection": {
+    "name": "Çağlar Sarıkaya",
+    "title": "Full Stack Developer | .NET Specialist",
+    "description": "I’m a <strong>full stack developer</strong>, and for me, <strong>AI</strong> has been a real turning point. My career feels divided into 'before AI' and 'after AI.' I’ve always enjoyed coding, but AI tools like <strong>Cursor</strong> and <strong>Copilot</strong> have taken what I can do to another level. I use them every day to boost productivity and push beyond my old limits. I am also interested in <strong>software architecture</strong>, <strong>automation</strong>, and writing <strong>clean, maintainable code</strong>. I frequently share insights through my <strong><a href=\"https://medium.com/@caglarcansarikaya\" target=\"_blank\" rel=\"noopener noreferrer\">Medium blog</a></strong> and <strong><a href=\"https://www.youtube.com/@caglarcansarikaya\" target=\"_blank\" rel=\"noopener noreferrer\">YouTube channel</a></strong>."
+  },
+  "aboutMe": {
+    "title": "About Me",
+    "paragraphs": [
+      {
+        "id": 1,
+        "content": "I'm Çağlar, a full stack software developer with hands-on experience across backend, frontend, cloud, and network domains. My journey began in university, but even before that, I was building database-driven applications. Since 2020, I’ve been working professionally, focusing on scalable architectures and clean code."
+      },
+      {
+        "id": 2,
+        "content": "Early in my career, I had the chance to work abroad through Erasmus, which helped me gain an international perspective. My academic path was ordinary, but I made the most of my time, working part-time jobs during university and learning directly from real-world projects. I’ve contributed to startups and SMEs, quickly adapting to different tech stacks and business needs."
+      },
+      {
+        "id": 3,
+        "content": "Throughout my career, I've documented solutions, tips, and best practices on my <a href=\"https://medium.com/@caglarcansarikaya\" target=\"_blank\">Medium blog</a>, sharing insights on .NET, SQL, and modern software engineering. Some posts are about creative problem-solving, like optimizing SQL queries or designing generic comparison classes."
+      },
+      {
+        "id": 4,
+        "content": "Today, AI coding assistants have transformed how we build software. However, I believe that AI is only as good as the developer directing it. AI can generate code, but without domain expertise and architectural understanding, it often misses the context or introduces anti-patterns. My strength lies in combining my deep technical foundation with the latest AI tools to produce reliable, maintainable solutions."
+      },
+      {
+        "id": 5,
+        "content": "I continue to expand my skills in full stack development, cloud infrastructure, and automation. I thrive on building products end-to-end, understanding both the big picture and the fine details. My goal is to bridge the gap between traditional software engineering and the AI-powered future."
+      }
+    ]
+  },
+  "projects": {
+    "title": "My Projects",
+    "items": [
+      {
+        "id": 1,
+        "title": "Web Page Tester",
+        "description": "A powerful and efficient ai builded web page testing tool that analyzes website response times and detects errors. This tool helps website administrators and developers identify performance bottlenecks and problematic URLs across their websites.",
+        "tech": [
+          "C#",
+          ".NET"
+        ],
+        "github": "https://github.com/caglarsarikaya/PageTester",
+        "demoLink": null
+      },
+      {
+        "id": 2,
+        "title": "Tightrope Walker Game",
+        "description": "The Tightrope Walker Game is a browser-based 3D game implemented using JavaScript and WebGL via the Three.js library. The game features a character who must traverse a tightrope stretched between two mountains while maintaining balance.",
+        "tech": [
+          "JavaScript",
+          "HTML",
+          "CSS",
+          "React",
+          "Three.js",
+          "Vite.js"
+        ],
+        "github": "https://github.com/caglarsarikaya/TightropeWalker",
+        "demoLink": "https://caglarsarikaya.github.io/TightropeWalker/"
+      }
+    ]
+  },
+  "content": {
+    "title": "Content & Media",
+    "youtubeChannelUrl": "https://youtube.com/@caglarcansarikaya",
+    "mediumProfileUrl": "https://caglarcansarikaya.medium.com"
+  },
+  "footer": {
+    "contact": {
+      "title": "Contact",
+      "email": "caglarcansarikaya@gmail.com"
+    },
+    "social": {
+      "title": "Connect",
+      "links": [
+        {
+          "platform": "GitHub",
+          "url": "https://github.com/caglarsarikaya",
+          "icon": "FaGithub"
+        },
+        {
+          "platform": "LinkedIn",
+          "url": "https://linkedin.com/in/caglarcansarikaya",
+          "icon": "FaLinkedin"
+        },
+        {
+          "platform": "YouTube",
+          "url": "https://youtube.com/@caglarcansarikaya",
+          "icon": "FaYoutube"
+        },
+        {
+          "platform": "Medium",
+          "url": "https://caglarcansarikaya.medium.com",
+          "icon": "FaMedium"
+        }
+      ]
+    },
+    "copyright": "Caglar Sarikaya. All rights reserved."
+  },
+  "youtubeVideos": [
+    {
+      "id": "mcCIym5CuFQ",
+      "isShort": true,
+      "title": "How to Use Cursor AI Effectively for Coding Projects",
+      "description": "My seven techniques for using Cursor AI effectively for coding projects",
+      "thumbnail": "https://i3.ytimg.com/vi/mcCIym5CuFQ/maxresdefault.jpg",
+      "publishedAt": "2025-04-16",
+      "url": "https://www.youtube.com/shorts/mcCIym5CuFQ"
+    },
+    {
+      "id": "2WWE4o4kJLM",
+      "isShort": false,
+      "title": "Page Tester in .NET 9 – Build a Website Response Checker with Cursor AI",
+      "description": "Learn how to build a page testing tool that checks website response times using .NET 9",
+      "thumbnail": "https://i3.ytimg.com/vi/2WWE4o4kJLM/maxresdefault.jpg",
+      "publishedAt": "2025-04-15",
+      "url": "https://www.youtube.com/watch?v=2WWE4o4kJLM"
+    },
+    {
+      "id": "b37avrEtpz0",
+      "isShort": false,
+      "title": "AI Showdown: Claude 3.5 vs GPT-4 vs DeepSeek R1 vs Copilot | Fullstack .NET 9 App Built in Minutes!",
+      "description": "I compare the performance of Claude 3.5, GPT-4, DeepSeek R1, and Copilot in a clean architecture .NET 9 web api built in minutes!",
+      "thumbnail": "https://i3.ytimg.com/vi/b37avrEtpz0/maxresdefault.jpg",
+      "publishedAt": "2024-01-14",
+      "url": "https://www.youtube.com/watch?v=b37avrEtpz0"
+    }
+  ],
+  "mediumBlogs": [
+    {
+      "id": 1,
+      "title": "What is IEnumerable, ICollection, IList, and IQueryable",
+      "description": "Understand the key differences between IQueryable and in-memory collections like IEnumerable, ICollection, and IList in C#.",
+      "publishedAt": "2021-12-27",
+      "url": "https://medium.com/c-sharp-programming/what-is-ienumerable-icollection-ilist-and-iqueryable-e78bf74cfd5f"
+    },
+    {
+      "id": 2,
+      "title": "How C# Convert Works Behind the Scenes: Types, IConvertible, and Culture-Specific Parsing",
+      "description": "Explore how C#'s Convert class handles type conversion using IConvertible, manages overflows, and respects culture settings when parsing values like strings to numbers.",
+      "publishedAt": "2022-04-25",
+      "url": "https://caglarcansarikaya.medium.com/c-convert-class-fa8607561f57"
+    },
+    {
+      "id": 3,
+      "title": "How to Remember Dependency Injection in .NET Using Mnemonics",
+      "description": "Learn the basics of Dependency Injection in .NET and how to remember its key concepts using simple mnemonics. This guide breaks down DI types like Singleton with easy-to-remember analogies to make the pattern stick. Perfect for beginners and anyone who wants a quick mental shortcut.",
+      "publishedAt": "2024-11-29",
+      "url": "https://caglarcansarikaya.medium.com/how-to-remember-dependency-injection-in-net-using-mnemonics-32f8c530b03c"
+    }
+  ]
+}
