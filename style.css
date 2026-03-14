@@ -7,7 +7,7 @@
   --font-body: 'Source Sans 3', -apple-system, sans-serif;
   --text: #2d2d2d;
   --text-light: #666;
-  --accent: #4a6fa5;
+  --accent: #2563eb;
   --bg: #fdfdfd;
   --border: #e0e0e0;
   --max-width: 680px;
@@ -141,6 +141,19 @@ strong {
   font-size: 0.93rem;
   color: var(--text-light);
   line-height: 1.7;
+}
+
+.job a {
+  text-decoration: underline;
+}
+
+.job-header a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.job-header a:hover {
+  text-decoration: underline;
 }
 
 /* Contact list */
