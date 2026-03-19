@@ -42,6 +42,19 @@ body {
   padding: 2rem 1.5rem;
 }
 
+/* Header */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  padding-top: 2rem;
+  padding-bottom: 1.5rem;
+  margin-top: -2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
 /* Navigation */
 nav {
   display: flex;
@@ -49,9 +62,6 @@ nav {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 0.5rem;
-  padding-bottom: 1.5rem;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid var(--border);
 }
 
 .nav-name {
@@ -105,8 +115,32 @@ h2 {
   border-bottom: 1px solid var(--border);
 }
 
+h3 {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
 p {
   margin-bottom: 0.85rem;
+}
+
+ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
 }
 
 strong {
@@ -237,6 +271,13 @@ footer p {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text-light);
+}
+/* Media */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
 }
 
 /* Responsive */
