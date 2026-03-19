@@ -1,0 +1,8 @@
+# Robots.txt for caglarsarikaya.github.io
+# Allow all search engines to crawl all content
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://caglarsarikaya.github.io/sitemap.xml
