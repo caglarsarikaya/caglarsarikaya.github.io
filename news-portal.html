@@ -16,7 +16,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6DJCPL0T9F"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
 
     gtag('config', 'G-6DJCPL0T9F');
@@ -38,62 +38,87 @@
 
     <!-- Project Content -->
     <section>
-      <h2>System Design: Traditional (Monolithic) News Portal Infrastructure</h2>
-      
+      <h2>Part 1: Design of Monolithic News Portal Infrastructure</h2>
+
       <p>
-        In this project, I designed and managed a robust infrastructure for a high-traffic news portal. The system was architected to handle large spikes in reader traffic while providing a stable editorial management interface.
+        In this project, I designed and managed a robust infrastructure for a high-traffic news portal. The system was
+        architected to handle large spikes in reader traffic while providing a stable editorial management interface.
       </p>
 
       <p>
-        The architecture is based on a vertical and horizontal scaling strategy, ensuring that the system can handle 2-3 times the peak RPS (Requests Per Second) observed during the busiest hours.
+        The architecture is based on a vertical and horizontal scaling strategy, ensuring that the system can handle 2-3
+        times the peak RPS (Requests Per Second) observed during the busiest hours.
       </p>
 
-      <img src="news-portal/simple-content-management-system-design.png" alt="System Design: Traditional (Monolithic) News Portal Infrastructure System Diagram" style="margin: 2rem 0; width: 100%;">
+      <img src="news-portal/simple-content-management-system-design.png"
+        alt="System Design: Traditional (Monolithic) News Portal Infrastructure System Diagram"
+        style="margin: 2rem 0; width: 100%;">
 
       <h3>1. Traffic Management & Edge Security</h3>
       <ul>
-        <li><strong>Load Balancer (Azure/Citrix):</strong> Acts as the primary entry point. It manages SSL termination to offload encryption tasks from the backend and distributes traffic to the healthy nodes in the backend pool.</li>
-        <li><strong>CDN (Cloudflare/Akamai):</strong> Positioned in front of the Load Balancer to provide WAF protection and DDoS mitigation.</li>
+        <li><strong>Load Balancer (Azure/Citrix):</strong> Acts as the primary entry point. It manages SSL termination
+          to offload encryption tasks from the backend and distributes traffic to the healthy nodes in the backend pool.
+        </li>
+        <li><strong>CDN (Cloudflare/Akamai):</strong> Positioned in front of the Load Balancer to provide WAF protection
+          and DDoS mitigation.</li>
       </ul>
-      <p><em>Operational Note: We avoided "Sticky Sessions" by managing all stateful data (like user sessions) in a distributed Redis cache, ensuring that if a backend server fails, the user’s session remains intact on another node.</em></p>
+      <p><em>Operational Note: We avoided "Sticky Sessions" by managing all stateful data (like user sessions) in a
+          distributed Redis cache, ensuring that if a backend server fails, the user’s session remains intact on another
+          node.</em></p>
 
       <h3>2. Caching Layer (Varnish Cluster)</h3>
       <p>To reduce database load and improve response times, a high-performance caching layer was implemented.</p>
       <ul>
-        <li><strong>Varnish Cache:</strong> Deployed on dedicated Virtual Machines (VMs) rather than containers to ensure maximum RAM performance. We achieved a ~90% Cache Hit ratio.</li>
-        <li><strong>High Availability:</strong> A dual-node Varnish cluster was used in a "Full Mesh" configuration, where each Varnish node connects to every backend server.</li>
-        <li><strong>Grace Mode:</strong> Enabled to ensure that if the backend becomes unavailable, the system continues to serve "stale" content from the cache, preventing a total site outage during backend failures.</li>
+        <li><strong>Varnish Cache:</strong> Deployed on dedicated Virtual Machines (VMs) rather than containers to
+          ensure maximum RAM performance. We achieved a ~90% Cache Hit ratio.</li>
+        <li><strong>High Availability:</strong> A dual-node Varnish cluster was used in a "Full Mesh" configuration,
+          where each Varnish node connects to every backend server.</li>
+        <li><strong>Grace Mode:</strong> Enabled to ensure that if the backend becomes unavailable, the system continues
+          to serve "stale" content from the cache, preventing a total site outage during backend failures.</li>
       </ul>
 
       <h3>3. Application Layer (Backend & Frontend)</h3>
       <p>The core logic was built using .NET for its enterprise-level stability and performance under heavy load.</p>
       <ul>
-        <li><strong>Docker on VMs:</strong> Applications were containerized to ensure environment consistency across development and production.</li>
-        <li><strong>Capacity Planning:</strong> We maintained a target CPU utilization of 40%-60%. This "buffer" is critical for news sites to survive sudden traffic spikes (breaking news events) without the servers locking up.</li>
-        <li><strong>Frontend Strategy:</strong> We utilized a clean separation between the user-facing site (MVC) and the administrative tools to reduce complexity and improve maintainability.</li>
+        <li><strong>Docker on VMs:</strong> Applications were containerized to ensure environment consistency across
+          development and production.</li>
+        <li><strong>Capacity Planning:</strong> We maintained a target CPU utilization of 40%-60%. This "buffer" is
+          critical for news sites to survive sudden traffic spikes (breaking news events) without the servers locking
+          up.</li>
+        <li><strong>Frontend Strategy:</strong> We utilized a clean separation between the user-facing site (MVC) and
+          the administrative tools to reduce complexity and improve maintainability.</li>
       </ul>
 
       <h3>4. Data & State Management</h3>
       <ul>
-        <li><strong>MongoDB (NoSQL):</strong> Implemented as a Replica Set (1 Primary, 2 Secondaries). Dedicated VMs were used instead of Docker to maximize disk I/O performance.</li>
-        <li><em>Election Flapping Prevention:</em> Priority settings were fine-tuned to prevent unnecessary primary re-elections during minor network fluctuations, which would otherwise cause brief service outages.</li>
-        <li><strong>Redis:</strong> Used for distributed locking (preventing editors from overwriting each other's work) and session management.</li>
-        <li><strong>S3 Storage:</strong> All media assets and static files are offloaded to S3, integrated with the CDN for global delivery.</li>
+        <li><strong>MongoDB (NoSQL):</strong> Implemented as a Replica Set (1 Primary, 2 Secondaries). Dedicated VMs
+          were used instead of Docker to maximize disk I/O performance.</li>
+        <li><em>Election Flapping Prevention:</em> Priority settings were fine-tuned to prevent unnecessary primary
+          re-elections during minor network fluctuations, which would otherwise cause brief service outages.</li>
+        <li><strong>Redis:</strong> Used for distributed locking (preventing editors from overwriting each other's work)
+          and session management.</li>
+        <li><strong>S3 Storage:</strong> All media assets and static files are offloaded to S3, integrated with the CDN
+          for global delivery.</li>
       </ul>
 
       <h3>Pros & Cons of This Architecture</h3>
       <h4>Pros:</h4>
       <ul>
-        <li><strong>Fast Time-to-Market:</strong> The monolithic structure allowed for rapid development and deployment in the early stages.</li>
-        <li><strong>High Performance:</strong> Thanks to Varnish and .NET, the system served millions of requests with sub-second latency.</li>
+        <li><strong>Fast Time-to-Market:</strong> The monolithic structure allowed for rapid development and deployment
+          in the early stages.</li>
+        <li><strong>High Performance:</strong> Thanks to Varnish and .NET, the system served millions of requests with
+          sub-second latency.</li>
         <li><strong>Stability:</strong> A well-understood stack that is easy to monitor using Application Insights.</li>
       </ul>
 
       <h4>Cons (The Drive to Microservices):</h4>
       <ul>
-        <li><strong>Coarse Scaling:</strong> Scaling required upgrading or adding entire VMs, which is less cost-effective than granular service scaling.</li>
-        <li><strong>Sequential Failures:</strong> In a monolith, a failure in a background task (like a Google Index notification) could occasionally block the main content update thread.</li>
-        <li><strong>Integration Overload:</strong> As we integrated with over 20 external news agencies, the "Tight Coupling" of the monolith made it difficult to isolate and debug specific integration failures.</li>
+        <li><strong>Coarse Scaling:</strong> Scaling required upgrading or adding entire VMs, which is less
+          cost-effective than granular service scaling.</li>
+        <li><strong>Sequential Failures:</strong> In a monolith, a failure in a background task (like a Google Index
+          notification) could occasionally block the main content update thread.</li>
+        <li><strong>Integration Overload:</strong> As we integrated with over 20 external news agencies, the "Tight
+          Coupling" of the monolith made it difficult to isolate and debug specific integration failures.</li>
       </ul>
 
     </section>
