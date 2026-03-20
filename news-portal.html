@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Design: News Portal Infrastructure - Caglar Sarikaya</title>
+  <meta name="description" content="Designing a monolithic news portal infrastructure: load balancing, Varnish caching, MongoDB, and understanding when monolithic architecture needs to evolve.">
+  <meta name="keywords" content="System Design, Monolithic News Portal Architecture, Monolithic Architecture, Varnish Cache, MongoDB, Load Balancer, High Traffic Website, Azure Infrastructure">
+  <meta name="author" content="Caglar Sarikaya">
+  <link rel="canonical" href="https://caglarsarikaya.github.io/news-portal.html">
+  
+  <!-- Open Graph / LinkedIn -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://caglarsarikaya.github.io/news-portal.html">
+  <meta property="og:title" content="System Design: Monolithic News Portal Infrastructure">
+  <meta property="og:description" content="Designing a news portal infrastructure: load balancing, Varnish caching, MongoDB, and understanding when monolithic architecture needs to evolve.">
+  <meta property="og:site_name" content="Caglar Sarikaya">
+  <meta property="og:locale" content="en_US">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="System Design: Monolithic News Portal Infrastructure">
+  <meta name="twitter:description" content="Designing a news portal infrastructure: load balancing, Varnish caching, MongoDB, and understanding when monolithic architecture needs to evolve.">
+  
+  <link rel="stylesheet" href="style.css">
+  <script src="components.js"></script>
+</head>
+
+<body>
+  <site-header></site-header>
+
+  <main class="container">
+    <section>
+      <h2>Monolithic News Portal Infrastructure</h2>
+
+      <p>
+        This project covers the system design for a news website. The requirements are simple: a public-facing site where readers view articles, and an admin panel where editors manage content. To size the infrastructure, I measure RPS during peak hours and multiply by 2-3x to handle unexpected spikes.
+      </p>
+
+      <img src="assets/images/simple-content-management-system-design.png"
+        alt="System Design: News Portal Infrastructure diagram showing CDN, Load Balancer, Varnish Cache, .NET Application Layer, MongoDB, Redis, and S3 Storage"
+        style="margin: 2rem 0; width: 100%;">
+
+      <h3>Infrastructure Approach: Docker on VMs</h3>
+      <p>
+        The system runs Docker containers on rented VMs. This gives us vertical scaling - when traffic grows, we upgrade CPU and RAM, then downgrade when it normalizes.
+      </p>
+      <p>
+        <strong>Pros:</strong> Simpler to set up and manage. No need to learn Kubernetes orchestration.
+      </p>
+      <p>
+        <strong>Cons:</strong> Scaling is manual and coarse. You pay for whole VM upgrades even if you only need a bit more capacity. Active DevOps monitoring is required. Kubernetes would give finer cost control, but adds complexity that wasn't justified for this project.
+      </p>
+
+      <h3>Tech Stack</h3>
+      <p>
+        <strong>.NET:</strong> Chosen for performance under load. News sites can spike hard when stories break, and .NET handles concurrent requests well. The trade-off is longer development time compared to Node.js or Python.
+      </p>
+      <p>
+        <strong>MVC over SPA:</strong> I went with server-rendered MVC instead of a separate React/Angular frontend. I've worked on projects that mixed Angular.js with MVC, and the boundaries got confusing fast - unclear which layer owned what logic. Either commit to full MVC or fully separate your frontend.
+      </p>
+
+      <h3>Request Flow</h3>
+      <p>Here's how a reader's request travels through the system:</p>
+      <ol>
+        <li><strong>CDN/WAF</strong> - Optional first layer. Services like Cloudflare or Akamai provide DDoS protection before traffic reaches your infrastructure.</li>
+        <li><strong>Load Balancer</strong> - Distributes requests across backend servers and handles SSL termination.</li>
+        <li><strong>Varnish Cache</strong> - Serves content from RAM if available. Most requests never hit the backend.</li>
+        <li><strong>Backend (.NET)</strong> - Only handles cache misses and admin operations.</li>
+        <li><strong>Database (MongoDB)</strong> - Stores articles, user data, and configurations.</li>
+      </ol>
+
+      <h3>Load Balancer</h3>
+      <p>
+        The domain points to the load balancer's IP. It routes traffic to a backend pool based on health checks that run every few seconds. If a server stops responding, traffic automatically shifts to healthy nodes.
+      </p>
+      <p>
+        SSL termination happens here, so backend servers don't waste CPU on encryption. The LB handles all HTTPS negotiation.
+      </p>
+      <p>
+        <strong>Sticky sessions warning:</strong> If your site has logins, you might think sticky sessions solve the "logged out randomly" problem. They do, but they create a worse problem: if a user's assigned server goes down, they lose their session entirely. Better solution: store sessions in Redis so any server can serve any user.
+      </p>
+
+      <h3>Varnish Cache</h3>
+      <p>
+        Varnish sits between the load balancer and backends. It caches responses in RAM and serves them directly for subsequent requests. For a news site, 90% cache hit rate is a good target - meaning 90% of requests never touch your backend.
+      </p>
+      <p>
+        <strong>Why this matters:</strong> News sites have read-heavy traffic. Thousands of people reading the same article shouldn't each trigger a database query. Caching cuts server costs and improves response times dramatically.
+      </p>
+      <p>
+        <strong>Installation:</strong> Install Varnish directly on VMs, not inside Docker. You want maximum RAM performance with no container overhead.
+      </p>
+      <p>
+        <strong>High availability:</strong> Run two Varnish servers on separate machines. If one dies, the other keeps serving. Both should connect to all backends (full mesh topology). If each Varnish only knows half the backends, losing one Varnish effectively loses half your backend capacity too.
+      </p>
+      <p>
+        <strong>Grace mode:</strong> Critical for news sites. Configure Varnish to serve stale content if backends become unavailable. During an outage, users still see cached articles instead of error pages. This buys time to fix issues without total downtime.
+      </p>
+      <p>
+        <strong>Cache invalidation:</strong> When editors update an article, the backend notifies Varnish to purge that specific URL. TTL can be 30 seconds for dynamic content or hours for static pages.
+      </p>
+
+      <h3>Backend Servers</h3>
+      <p>
+        Docker containers run on VMs, providing consistent environments across development and production. No more "works on my machine" problems.
+      </p>
+      <p>
+        <strong>Capacity planning:</strong> Target 40-60% CPU utilization during normal traffic. Never let servers run above 80% baseline. Here's why: if you're at 80% and a traffic spike hits, servers hit 100% and stop responding entirely. Worse, the load balancer redirects that traffic to remaining servers, which then also crash. This cascade can take down your entire system.
+      </p>
+      <p>
+        <strong>Sizing rule:</strong> Calculate how many users you can serve at 50% utilization, estimate your peak traffic, then add one extra server as buffer.
+      </p>
+
+      <h3>MongoDB</h3>
+      <p>
+        MongoDB runs as a replica set: one primary handles writes, secondaries replicate data and can serve reads.
+      </p>
+      <p>
+        <strong>Always use odd numbers:</strong> MongoDB nodes vote to elect a primary. With even numbers, you can get split votes. Use 3 nodes (1 primary, 2 secondary) or add an arbiter if you must use even numbers.
+      </p>
+      <p>
+        <strong>Election flapping:</strong> A common mistake. Without proper priority settings, minor network hiccups trigger new elections. Nodes keep voting for a new primary, and during elections the database can't accept writes. Your backend starts failing. Fix: assign explicit priorities to nodes so elections only happen when actually needed.
+      </p>
+      <p>
+        <strong>Installation:</strong> Like Varnish, install MongoDB directly on VMs for better disk I/O. Each node on a separate machine for fault tolerance.
+      </p>
+
+      <h3>Redis</h3>
+      <p>
+        Redis handles two things: session storage (so users don't lose logins when load balancer routes them to different servers) and editor coordination (tracking who's editing which article to prevent conflicts).
+      </p>
+
+      <h3>What This Architecture Does Well</h3>
+      <ul>
+        <li><strong>Fast development:</strong> Monolithic structure means all code in one place. Easy to understand and deploy.</li>
+        <li><strong>High read performance:</strong> Varnish handles most traffic without touching the backend.</li>
+        <li><strong>Reliable:</strong> Redundancy at each layer (2 Varnish servers, multiple backends, MongoDB replica set).</li>
+        <li><strong>Straightforward operations:</strong> Standard tools, well-documented patterns, easy to find help when things break.</li>
+      </ul>
+
+      <h3>Where It Breaks Down</h3>
+      <p>
+        The admin side is where problems emerge. A news portal isn't just serving articles - it's ingesting content from 20-30 external sources (news agencies, RSS feeds, social media). Editors monitor incoming content, approve auto-generated articles, or write from scratch.
+      </p>
+      <p>
+        In a monolith, these workflows run as chains of operations: receive content → process → store → notify editors → publish → purge cache → update sitemap → notify Google. When something fails mid-chain:
+      </p>
+      <ul>
+        <li>Hard to identify where it failed</li>
+        <li>No way to replay failed operations</li>
+        <li>One failure can block the entire chain</li>
+        <li>Debugging requires tracing through the full monolith</li>
+      </ul>
+      <p>
+        We added CQRS (Command Query Responsibility Segregation) to separate read and write paths. It helped, but didn't fully solve the problem.
+      </p>
+
+      <h3>Why Microservices Become Necessary</h3>
+      <p>
+        The core issue: monolithic architecture can't isolate failures. When you have 20+ external integrations and complex editorial workflows, you need:
+      </p>
+      <ul>
+        <li><strong>Independent services:</strong> If the Google indexing service fails, article publishing should still work.</li>
+        <li><strong>Event-driven communication:</strong> Services publish events to a message queue. Other services consume them when ready. Failed events can be retried without blocking anything.</li>
+        <li><strong>Granular scaling:</strong> Scale only the services under load, not the entire application.</li>
+        <li><strong>Isolated deployments:</strong> Update one service without risking the whole system.</li>
+      </ul>
+      <p>
+        This monolithic setup works for serving content to readers. But the admin side's complexity - external integrations, workflows, chain reactions - pushes toward microservices with proper event sourcing.
+      </p>
+
+      <h3>What This Project Shows</h3>
+      <p>
+        I'm not presenting this as a perfect architecture. I'm showing how I evaluate trade-offs: when simplicity wins, when it costs you, and how to recognize when a system has outgrown its architecture. Understanding these inflection points matters more than memorizing technology choices.
+      </p>
+
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+</body>
+
+</html>
