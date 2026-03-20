@@ -155,17 +155,14 @@ class SiteHeader extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
       <header role="banner">
-        <nav aria-label="Main navigation">
-          <a href="index.html" class="nav-name">Caglar Sarikaya</a>
-          <span class="nav-links">
-            <a href="index.html#about">About</a>
-            /
-            <a href="index.html#experience">Experience</a>
-            /
-            <a href="index.html#projects">Projects</a>
-            /
-            <a href="index.html#contact">Contact</a>
-          </span>
+        <nav aria-label="Main navigation" class="nav-centered">
+          <a href="index.html#about">About</a>
+          <span class="nav-divider">/</span>
+          <a href="index.html#experience">Experience</a>
+          <span class="nav-divider">/</span>
+          <a href="index.html#projects">Projects</a>
+          <span class="nav-divider">/</span>
+          <a href="index.html#contact">Contact</a>
         </nav>
       </header>
     `;
