@@ -5,22 +5,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>System Design: News Portal Infrastructure - Caglar Sarikaya</title>
-  <meta name="description" content="Designing a news portal infrastructure: load balancing, Varnish caching, MongoDB, and understanding when monolithic architecture needs to evolve.">
-  <meta name="keywords" content="System Design, News Portal Architecture, Monolithic Architecture, Varnish Cache, MongoDB, Load Balancer, High Traffic Website, Azure Infrastructure">
+  <meta name="description" content="Designing a monolithic news portal infrastructure: load balancing, Varnish caching, MongoDB, and understanding when monolithic architecture needs to evolve.">
+  <meta name="keywords" content="System Design, Monolithic News Portal Architecture, Monolithic Architecture, Varnish Cache, MongoDB, Load Balancer, High Traffic Website, Azure Infrastructure">
   <meta name="author" content="Caglar Sarikaya">
   <link rel="canonical" href="https://caglarsarikaya.github.io/news-portal.html">
   
   <!-- Open Graph / LinkedIn -->
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://caglarsarikaya.github.io/news-portal.html">
-  <meta property="og:title" content="System Design: News Portal Infrastructure">
+  <meta property="og:title" content="System Design: Monolithic News Portal Infrastructure">
   <meta property="og:description" content="Designing a news portal infrastructure: load balancing, Varnish caching, MongoDB, and understanding when monolithic architecture needs to evolve.">
   <meta property="og:site_name" content="Caglar Sarikaya">
   <meta property="og:locale" content="en_US">
   
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="System Design: News Portal Infrastructure">
+  <meta name="twitter:title" content="System Design: Monolithic News Portal Infrastructure">
   <meta name="twitter:description" content="Designing a news portal infrastructure: load balancing, Varnish caching, MongoDB, and understanding when monolithic architecture needs to evolve.">
   
   <link rel="stylesheet" href="style.css">
@@ -32,7 +32,7 @@
 
   <main class="container">
     <section>
-      <h2>News Portal Infrastructure</h2>
+      <h2>Monolithic News Portal Infrastructure</h2>
 
       <p>
         This project covers the system design for a news website. The requirements are simple: a public-facing site where readers view articles, and an admin panel where editors manage content. To size the infrastructure, I measure RPS during peak hours and multiply by 2-3x to handle unexpected spikes.

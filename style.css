@@ -200,6 +200,65 @@ strong {
   text-decoration: underline;
 }
 
+/* Project cards */
+.project-card {
+  display: flex;
+  gap: 1.5rem;
+  min-height: 140px;
+  margin-bottom: 1.5rem;
+}
+
+.project-card:last-child {
+  margin-bottom: 0;
+}
+
+.project-content {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-content h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.project-content p {
+  font-size: 0.93rem;
+  color: var(--text-light);
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+
+.project-content a {
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+.project-image {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+@media (max-width: 520px) {
+  .project-card {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .project-image {
+    order: -1;
+    max-height: 150px;
+  }
+}
+
 /* Contact list */
 .contact-list {
   list-style: none;
