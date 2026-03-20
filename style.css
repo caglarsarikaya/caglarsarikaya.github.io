@@ -238,6 +238,7 @@ strong {
 .project-image {
   flex: 1;
   min-width: 0;
+  max-width: 33%;
 }
 
 .project-image img {
@@ -247,15 +248,26 @@ strong {
   border-radius: 6px;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 600px) {
   .project-card {
     flex-direction: column;
     min-height: auto;
+    gap: 1rem;
   }
 
   .project-image {
     order: -1;
-    max-height: 150px;
+    max-width: 100%;
+    height: 120px;
+  }
+
+  .project-image img {
+    height: 120px;
+    object-fit: cover;
+  }
+
+  .project-content h3 {
+    font-size: 0.9rem;
   }
 }
 
