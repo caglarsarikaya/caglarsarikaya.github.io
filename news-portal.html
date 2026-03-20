@@ -23,6 +23,7 @@
   <meta name="twitter:title" content="System Design: Monolithic News Portal Infrastructure">
   <meta name="twitter:description" content="Designing a news portal infrastructure: load balancing, Varnish caching, MongoDB, and understanding when monolithic architecture needs to evolve.">
   
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
   <script src="components.js"></script>
 </head>
@@ -31,8 +32,8 @@
   <site-header></site-header>
 
   <main class="container">
-    <section>
-      <h2>Monolithic News Portal Infrastructure</h2>
+    <article>
+      <h1 class="article-title">Monolithic News Portal Infrastructure</h1>
 
       <p>
         This project covers the system design for a news website. The requirements are simple: a public-facing site where readers view articles, and an admin panel where editors manage content. To size the infrastructure, I measure RPS during peak hours and multiply by 2-3x to handle unexpected spikes.
@@ -176,7 +177,7 @@
         I'm not presenting this as a perfect architecture. I'm showing how I evaluate trade-offs: when simplicity wins, when it costs you, and how to recognize when a system has outgrown its architecture. Understanding these inflection points matters more than memorizing technology choices.
       </p>
 
-    </section>
+    </article>
   </main>
 
   <site-footer></site-footer>
