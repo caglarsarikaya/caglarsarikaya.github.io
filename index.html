@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Çağlar Can Sarıkaya - Senior Software Engineer</title>
   <meta name="description"
-    content="Senior full-stack engineer (C#/.NET, React) with 6 years building high-traffic web platforms, e-commerce systems and integrations. Builds LLM tools in Python.">
+    content="Projects, writing, videos and code by Çağlar Can Sarıkaya, senior full-stack engineer (C#/.NET, React) building LLM tools.">
   <meta name="keywords" content="Senior Software Engineer, Full Stack Developer, C# Developer, .NET Developer, React Developer, React Native, LLM Integration, LangChain, Kubernetes, Microservices, Turkiye">
   <meta name="author" content="Çağlar Can Sarıkaya">
   <link rel="canonical" href="https://caglarsarikaya.github.io/">
@@ -15,14 +15,14 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://caglarsarikaya.github.io/">
   <meta property="og:title" content="Çağlar Can Sarıkaya - Senior Software Engineer">
-  <meta property="og:description" content="Senior full-stack engineer (C#/.NET, React) with 6 years building high-traffic web platforms, e-commerce systems and integrations. Builds LLM tools in Python.">
+  <meta property="og:description" content="Projects, writing, videos and code by Çağlar Can Sarıkaya, senior full-stack engineer (C#/.NET, React) building LLM tools.">
   <meta property="og:site_name" content="Çağlar Can Sarıkaya">
   <meta property="og:locale" content="en_US">
   
   <!-- Twitter -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Çağlar Can Sarıkaya - Senior Software Engineer">
-  <meta name="twitter:description" content="Senior full-stack engineer (C#/.NET, React) with 6 years building high-traffic web platforms, e-commerce systems and integrations. Builds LLM tools in Python.">
+  <meta name="twitter:description" content="Projects, writing, videos and code by Çağlar Can Sarıkaya, senior full-stack engineer (C#/.NET, React) building LLM tools.">
   
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -34,7 +34,7 @@
         "@id": "https://caglarsarikaya.github.io/#website",
         "url": "https://caglarsarikaya.github.io/",
         "name": "Çağlar Can Sarıkaya",
-        "description": "Software engineer portfolio with system design projects, work experience, writing and videos."
+        "description": "Portfolio of projects, writing, videos and code."
       },
       {
         "@type": "Person",
@@ -94,252 +94,172 @@
   <script src="components.js"></script>
 </head>
 
-<body>
+<body class="home">
+  <!-- Icon sprite -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-github" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+      </symbol>
+      <symbol id="i-medium" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <ellipse cx="6" cy="12" rx="5" ry="5"/><ellipse cx="15.5" cy="12" rx="2.5" ry="4.5"/><ellipse cx="20" cy="12" rx="1.5" ry="4"/>
+      </symbol>
+      <symbol id="i-youtube" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"/>
+        <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+      </symbol>
+      <symbol id="i-linkedin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+      </symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+      </symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 17 17 7M8 7h9v9"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <site-header></site-header>
 
   <main class="container">
-    <!-- Hero -->
-    <section id="hero" class="hero">
-      <h1>Çağlar Can Sarıkaya</h1>
-      <p class="hero-subtitle">Senior full-stack engineer · C#/.NET, React · builds LLM tools</p>
-    </section>
 
-    <!-- About -->
-    <section id="about">
-      <h2>About Me</h2>
-      <p>
-        Senior full-stack engineer based in Türkiye with <strong>6 years</strong> of experience building
-        high-traffic web platforms, e-commerce systems and third-party integrations.
-        Most of my production work is in <strong>C#/.NET</strong> and <strong>React</strong>, running on
-        <strong>Docker</strong> and <strong>Kubernetes</strong>.
-      </p>
-      <p>
-        Most recently I was one of 15 engineers on the CMS behind Doğuş Media Group's sites
-        (<strong>100M+ monthly visits</strong>), where we rebuilt a 15-year-old admin panel as .NET/React microservices.
-        I mentor juniors and interns, and I build LLM-based tools in <strong>Python</strong>.
-      </p>
-    </section>
-
-    <!-- Experience -->
-    <section id="experience">
-      <h2>Experience</h2>
-
-      <div class="job">
-        <div class="job-header">
-          <span><strong>Senior Software Engineer</strong> · Self-Employed</span>
-          <span class="job-date">May 2026 – Present</span>
-        </div>
-        <p>
-          Building client products end to end: a U.S. citizenship test prep app for iOS and Android
-          (React Native, TypeScript) for <a href="https://techpaiko.pages.dev/" target="_blank">Techpaiko</a>, and
-          <a href="https://bizsiziarariz.com" target="_blank">bizsiziarariz.com</a>, a community platform
-          for job interview reviews and company ratings (ASP.NET MVC).
+    <!-- Hero + Now -->
+    <section id="hero" class="hero-grid">
+      <div class="card hero">
+        <p class="eyebrow">Software engineer · Türkiye</p>
+        <h1>Çağlar Can Sarıkaya</h1>
+        <p class="hero-lead">
+          I build full-stack products with <strong>C#/.NET</strong> and <strong>React</strong>,
+          and lately, tools on top of <strong>LLMs</strong>. This is where I keep my work, writing and videos.
         </p>
+        <p class="hero-credential">
+          Previously built the CMS behind NTV, Star TV and puhutv &mdash; 100M+ monthly visits.
+        </p>
+        <nav class="social" aria-label="Profiles">
+          <a href="https://github.com/caglarsarikaya" target="_blank" rel="noopener" aria-label="GitHub"><svg><use href="#i-github"/></svg><span>GitHub</span></a>
+          <a href="https://caglarcansarikaya.medium.com/" target="_blank" rel="noopener" aria-label="Medium"><svg><use href="#i-medium"/></svg><span>Medium</span></a>
+          <a href="https://www.youtube.com/@caglarcansarikaya" target="_blank" rel="noopener" aria-label="YouTube"><svg><use href="#i-youtube"/></svg><span>YouTube</span></a>
+          <a href="https://linkedin.com/in/caglarcansarikaya" target="_blank" rel="noopener" aria-label="LinkedIn"><svg><use href="#i-linkedin"/></svg><span>LinkedIn</span></a>
+        </nav>
       </div>
 
-      <div class="job">
-        <div class="job-header">
-          <span><strong>Senior Software Engineer</strong> · <a href="https://www.dogusgrubu.com.tr/en/homepage"
-              target="_blank">Doğuş Media Group</a></span>
-          <span class="job-date">Jul 2022 – Dec 2025</span>
+      <aside class="card now">
+        <p class="eyebrow"><span class="pulse" aria-hidden="true"></span>Now</p>
+        <ul class="now-list">
+          <li>
+            <strong>U.S. Citizenship Test Prep</strong>
+            <span>React Native app for <a href="https://techpaiko.pages.dev/" target="_blank" rel="noopener">Techpaiko</a>, launching late 2026</span>
+          </li>
+          <li>
+            <strong><a href="https://bizsiziarariz.com" target="_blank" rel="noopener">bizsiziarariz.com</a></strong>
+            <span>Interview reviews &amp; company ratings, live</span>
+          </li>
+          <li>
+            <strong>Blog</strong>
+            <span>Notes on AI-assisted development</span>
+          </li>
+        </ul>
+        <div class="chips" aria-label="Stack">
+          <span class="chip">C#</span><span class="chip">.NET</span><span class="chip">React</span>
+          <span class="chip">React Native</span><span class="chip">TypeScript</span><span class="chip">Python</span>
+          <span class="chip">Kubernetes</span><span class="chip">LangChain</span>
         </div>
-        <p>
-          One of 15 engineers on the CMS behind
-          <a href="https://ntv.com.tr" target="_blank">NTV</a>,
-          <a href="https://www.ntvspor.net" target="_blank">NTV Spor</a>,
-          <a href="https://www.startv.com.tr" target="_blank">Star TV</a>,
-          <a href="https://puhutv.com" target="_blank">puhutv</a> and more (100M+ monthly visits).
-          Helped rebuild a 15-year-old admin panel as .NET microservices with a React front end on Kubernetes.
-          Cut admin response times from 10–20 s to under 5 s, kept public endpoints under 600 ms,
-          and moved to Kubernetes autoscaling with Varnish in front.
-          Integrated Reuters, AA, AccuWeather and market data feeds, built an LLM assistant for editors,
-          migrated services to .NET 8, and mentored juniors and interns.
-        </p>
-      </div>
-
-      <div class="job">
-        <div class="job-header">
-          <span><strong>Mid-Senior Software Engineer</strong> · <a href="https://www.mazakayazilim.com/"
-              target="_blank">Mazaka</a></span>
-          <span class="job-date">Jan 2021 – Jul 2022</span>
-        </div>
-        <p>
-          Developed features across <strong>50+ client e-commerce stores</strong> on an in-house .NET platform.
-          Built an Excel bulk price/stock import running as Quartz.NET jobs, wrote SQL sales analytics,
-          and integrated bank payment gateways, Stripe, PayPal, shipping providers and e-invoicing.
-        </p>
-      </div>
-
-      <div class="job">
-        <div class="job-header">
-          <span><strong>Software Engineer</strong> · <a href="https://nitrobilisim.com.tr/en" target="_blank">Nitro
-              Mechatronics</a></span>
-          <span class="job-date">Jan 2020 – Dec 2020</span>
-        </div>
-        <p>
-          Built a repair tracking system for an automotive ECU repair business (.NET Core, Vue.js)
-          and the company's chip-tuning e-commerce store on nopCommerce.
-        </p>
-      </div>
-
-      <div class="job">
-        <div class="job-header">
-          <span><strong>Machine Learning Intern</strong> · <a
-              href="https://www.linkedin.com/company/int-marketing-group" target="_blank">I.M. Group</a></span>
-          <span class="job-date">Jul 2019 – Nov 2019</span>
-        </div>
-        <p>
-          LSTM models for stock price forecasting (Python, TensorFlow).
-        </p>
-      </div>
+      </aside>
     </section>
 
     <!-- Projects -->
     <section id="projects">
-      <h2>Projects</h2>
+      <div class="section-head">
+        <h2>Projects</h2>
+        <span class="section-note">Products I've built and shipped</span>
+      </div>
 
-      <div class="project-card">
-        <div class="project-content">
-          <h3>Monolithic News Portal Infrastructure</h3>
-          <p>
-            System design for a high-traffic news site. Covers load balancing, Varnish caching, MongoDB setup, 
-            and capacity planning. Also explains why this monolithic setup eventually needs microservices.
-          </p>
-          <a href="news-portal.html">Read the breakdown &rarr;</a>
-        </div>
-        <div class="project-image">
-          <a href="news-portal.html">
-            <img src="assets/images/simple-content-management-system-design.png" alt="News Portal Infrastructure Diagram">
+      <div class="work-grid">
+        <article class="card work-card">
+          <a class="work-media monogram" href="https://bizsiziarariz.com" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+            <span>B</span>
           </a>
-        </div>
-      </div>
+          <div class="work-body">
+            <span class="badge">Live</span>
+            <h3><a href="https://bizsiziarariz.com" target="_blank" rel="noopener">bizsiziarariz.com</a></h3>
+            <p>Candidates review job interviews and rate companies: anonymous posts, structured evaluations, company pages. Built solo.</p>
+            <div class="tags"><span>ASP.NET MVC</span><span>SQL Server</span><span>AI-assisted</span></div>
+          </div>
+        </article>
 
-      <div class="project-card">
-        <div class="project-content">
-          <h3>bizsiziarariz.com</h3>
-          <p>
-            Community platform where candidates review job interview experiences and rate companies:
-            anonymous posting, structured evaluation forms, company pages and user accounts.
-            Built solo with ASP.NET MVC and AI-assisted development.
-          </p>
-          <a href="https://bizsiziarariz.com" target="_blank">Visit the site &rarr;</a>
-        </div>
-      </div>
+        <article class="card work-card">
+          <a class="work-media monogram" href="https://techpaiko.pages.dev/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+            <span>U</span>
+          </a>
+          <div class="work-body">
+            <span class="badge">Launching 2026</span>
+            <h3><a href="https://techpaiko.pages.dev/" target="_blank" rel="noopener">U.S. Citizenship Test Prep</a></h3>
+            <p>iOS and Android app that helps people prepare for the USCIS civics test. In closed testing on Google Play.</p>
+            <div class="tags"><span>React Native</span><span>TypeScript</span></div>
+          </div>
+        </article>
 
-      <div class="project-card">
-        <div class="project-content">
-          <h3>U.S. Citizenship Test Prep App</h3>
-          <p>
-            iOS and Android app that helps users prepare for the USCIS civics test, built for <a href="https://techpaiko.pages.dev/" target="_blank">Techpaiko</a>
-            with React Native and TypeScript. In closed testing on Google Play, launching late 2026.
-          </p>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-content">
-          <h3>HumanTrustRatio · HackPSU 2026</h3>
-          <p>
-            Built in 24 hours: a multi-agent LLM tool where agents research a candidate's public footprint
-            and a final model cross-checks the findings against their resume (Python, LangChain).
-          </p>
-          <a href="https://github.com/caglarsarikaya/HumanTrustRatio" target="_blank">View on GitHub &rarr;</a>
-        </div>
+        <article class="card work-card">
+          <a class="work-media monogram" href="https://github.com/caglarsarikaya/HumanTrustRatio" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+            <span>H</span>
+          </a>
+          <div class="work-body">
+            <span class="badge">HackPSU 2026</span>
+            <h3><a href="https://github.com/caglarsarikaya/HumanTrustRatio" target="_blank" rel="noopener">HumanTrustRatio</a></h3>
+            <p>Built in 24 hours: LLM agents research a candidate's public footprint and cross-check it against their resume.</p>
+            <div class="tags"><span>Python</span><span>LangChain</span><span>Multi-agent</span></div>
+          </div>
+        </article>
       </div>
     </section>
 
-    <!-- Latest: filled from data/feeds.json (built daily by GitHub Actions) -->
-    <section id="latest">
-      <h2>Latest</h2>
+    <!-- Blog + GitHub repos (Medium and GitHub filled from data/feeds.json, built daily by GitHub Actions) -->
+    <div class="split">
+      <section id="blog" class="card panel">
+        <div class="section-head">
+          <h2>Blog</h2>
+          <a class="see-all" href="https://caglarcansarikaya.medium.com/" target="_blank" rel="noopener">All on Medium <svg><use href="#i-arrow"/></svg></a>
+        </div>
 
-      <h3>Writing</h3>
-      <ul class="feed-list" data-feed="medium"></ul>
-      <a class="feed-more" href="https://caglarcansarikaya.medium.com/" target="_blank">All posts on Medium &rarr;</a>
+        <!-- Posts hosted on this site -->
+        <a class="featured-post" href="news-portal.html">
+          <img src="assets/images/simple-content-management-system-design.png" alt="" loading="lazy">
+          <span class="featured-body">
+            <span class="badge">System design</span>
+            <span class="featured-title">Monolithic News Portal Infrastructure</span>
+            <span class="featured-desc">Load balancing, Varnish, MongoDB and capacity planning &mdash; and when a monolith has to evolve.</span>
+          </span>
+        </a>
 
-      <h3>Videos</h3>
-      <div class="video-grid" data-feed="youtube"></div>
-      <a class="feed-more" href="https://www.youtube.com/@caglarcansarikaya" target="_blank">YouTube channel &rarr;</a>
+        <ol class="post-list skeleton" data-feed="medium"></ol>
+      </section>
 
-      <h3>Code</h3>
-      <ul class="feed-list" data-feed="github"></ul>
-      <a class="feed-more" href="https://github.com/caglarsarikaya?tab=repositories" target="_blank">All repositories &rarr;</a>
-    </section>
+      <section id="repos" class="card panel">
+        <div class="section-head">
+          <h2>GitHub Repos</h2>
+          <a class="see-all" href="https://github.com/caglarsarikaya?tab=repositories" target="_blank" rel="noopener">All repos <svg><use href="#i-arrow"/></svg></a>
+        </div>
+        <div class="repo-list skeleton" data-feed="github"></div>
+      </section>
+    </div>
 
-    <!-- Education -->
-    <section id="education">
-      <h2>Education</h2>
-      <p><strong>B.Sc. Computer Engineering</strong> — Erciyes University, 2014 – 2019</p>
+    <!-- Videos -->
+    <section id="videos">
+      <div class="section-head">
+        <h2>Videos</h2>
+        <a class="see-all" href="https://www.youtube.com/@caglarcansarikaya" target="_blank" rel="noopener">YouTube <svg><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="video-grid skeleton" data-feed="youtube"></div>
     </section>
 
     <!-- Contact -->
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>
-        Open to <strong>senior full-stack</strong> (.NET / React) and <strong>AI engineering</strong> roles.
-        Based in Türkiye, comfortable working remotely across time zones.
-      </p>
-      <ul class="contact-list">
-        <li>
-          <a href="mailto:caglarcansarikaya@gmail.com">
-            <svg class="contact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-            <span class="contact-label">Email</span>
-            <span class="contact-value">caglarcansarikaya@gmail.com</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://linkedin.com/in/caglarcansarikaya" target="_blank">
-            <svg class="contact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-              <rect x="2" y="9" width="4" height="12"></rect>
-              <circle cx="4" cy="4" r="2"></circle>
-            </svg>
-            <span class="contact-label">LinkedIn</span>
-            <span class="contact-value">caglarcansarikaya</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/caglarsarikaya" target="_blank">
-            <svg class="contact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path
-                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-              </path>
-            </svg>
-            <span class="contact-label">GitHub</span>
-            <span class="contact-value">caglarsarikaya</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://caglarcansarikaya.medium.com/" target="_blank">
-            <svg class="contact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <ellipse cx="6" cy="12" rx="5" ry="5"></ellipse>
-              <ellipse cx="15.5" cy="12" rx="2.5" ry="4.5"></ellipse>
-              <ellipse cx="20" cy="12" rx="1.5" ry="4"></ellipse>
-            </svg>
-            <span class="contact-label">Medium</span>
-            <span class="contact-value">caglarcansarikaya</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.youtube.com/@caglarcansarikaya" target="_blank">
-            <svg class="contact-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path
-                d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z">
-              </path>
-              <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
-            </svg>
-            <span class="contact-label">YouTube</span>
-            <span class="contact-value">@caglarcansarikaya</span>
-          </a>
-        </li>
-      </ul>
+    <section id="contact" class="card contact">
+      <div>
+        <h2 class="contact-title">Have a project or a role in mind?</h2>
+        <p>Open to senior full-stack (.NET / React) and AI engineering work, remote across time zones.</p>
+      </div>
+      <a class="button" href="mailto:caglarcansarikaya@gmail.com"><svg><use href="#i-mail"/></svg>caglarcansarikaya@gmail.com</a>
     </section>
 
   </main>
