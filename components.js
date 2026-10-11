@@ -162,6 +162,8 @@ class SiteHeader extends HTMLElement {
           <span class="nav-divider">/</span>
           <a href="index.html#projects">Projects</a>
           <span class="nav-divider">/</span>
+          <a href="index.html#latest">Latest</a>
+          <span class="nav-divider">/</span>
           <a href="index.html#contact">Contact</a>
         </nav>
       </header>
@@ -176,7 +178,7 @@ class SiteFooter extends HTMLElement {
     this.innerHTML = `
       <footer>
         <div class="footer-content">
-          <p>&copy; 2026 Caglar Sarikaya</p>
+          <p>&copy; 2026 Çağlar Can Sarıkaya</p>
         </div>
       </footer>
     `;
@@ -184,12 +186,79 @@ class SiteFooter extends HTMLElement {
 }
 customElements.define('site-footer', SiteFooter);
 
+// 5. Latest feeds (Medium, YouTube, GitHub) from data/feeds.json
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text) node.textContent = text;
+  return node;
+}
+
+function link(href, text) {
+  const a = el('a', '', text);
+  a.href = href;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  return a;
+}
+
+function formatDate(iso) {
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+}
+
+async function renderFeeds() {
+  const section = document.getElementById('latest');
+  if (!section) return;
+
+  let data;
+  try {
+    const res = await fetch('data/feeds.json');
+    if (!res.ok) return;
+    data = await res.json();
+  } catch {
+    return; // the "All posts / channel / repos" links still work
+  }
+
+  const medium = section.querySelector('[data-feed="medium"]');
+  (data.medium || []).forEach(post => {
+    const li = el('li');
+    li.append(link(post.url, post.title), el('span', 'feed-meta', formatDate(post.date)));
+    medium.append(li);
+  });
+
+  const youtube = section.querySelector('[data-feed="youtube"]');
+  (data.youtube || []).forEach(video => {
+    const a = link(video.url, '');
+    const img = el('img');
+    img.src = video.thumbnail;
+    img.alt = video.title;
+    img.loading = 'lazy';
+    a.append(img, el('span', 'video-title', video.title));
+    youtube.append(a);
+  });
+
+  const github = section.querySelector('[data-feed="github"]');
+  (data.github || []).forEach(repo => {
+    const li = el('li');
+    const meta = [repo.language, repo.stars ? `★ ${repo.stars}` : ''].filter(Boolean).join(' · ');
+    li.append(link(repo.url, repo.name));
+    if (meta) li.append(el('span', 'feed-meta', meta));
+    if (repo.description) li.append(el('span', 'feed-desc', repo.description));
+    github.append(li);
+  });
+}
+
 // Execute head injection when the script loads
 injectGlobalHead();
 
-// Initialize analytics after DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initAnalytics);
-} else {
+// Initialize analytics and feeds after DOM is ready
+function onReady() {
   initAnalytics();
+  renderFeeds();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', onReady);
+} else {
+  onReady();
 }
