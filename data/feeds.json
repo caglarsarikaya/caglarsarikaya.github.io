@@ -1,0 +1,97 @@
+{
+  "updated": "2026-10-11T12:12:15.272Z",
+  "medium": [
+    {
+      "title": "Spent 2k Tokens While Trying to Make a 60-Second Video with Runway",
+      "url": "https://caglarcansarikaya.medium.com/trying-to-make-a-60-second-video-with-runway-f94e05d9ee39",
+      "date": "2026-10-04"
+    },
+    {
+      "title": "My First AI Coding Loop Wrote 2,800 Lines of Code and Changed Nothing",
+      "url": "https://caglarcansarikaya.medium.com/my-first-ai-coding-loop-wrote-2-800-lines-of-code-and-changed-nothing-7c73ba327cde",
+      "date": "2026-10-01"
+    },
+    {
+      "title": "Understanding “Your target project doesn’t match your migrations assembly” in Entity Framework Core",
+      "url": "https://caglarcansarikaya.medium.com/understanding-your-target-project-doesnt-match-your-migrations-assembly-in-entity-framework-core-d76ede58c4a4",
+      "date": "2025-11-24"
+    },
+    {
+      "title": "Exporting MongoDB Aggregation Results in Compass (v1.28.4, MongoDB 3.2.22)",
+      "url": "https://caglarcansarikaya.medium.com/exporting-mongodb-aggregation-results-in-compass-v1-28-4-mongodb-3-2-22-b934fa2ebc34",
+      "date": "2025-10-01"
+    },
+    {
+      "title": "Understanding __main__ in Python",
+      "url": "https://caglarcansarikaya.medium.com/understanding-main-in-python-86eeca89c5a6",
+      "date": "2025-09-24"
+    }
+  ],
+  "youtube": [
+    {
+      "title": "runway first try",
+      "url": "https://www.youtube.com/watch?v=dz5a66VZFBQ",
+      "thumbnail": "https://i.ytimg.com/vi/dz5a66VZFBQ/mqdefault.jpg",
+      "views": 3,
+      "date": "2026-10-04"
+    },
+    {
+      "title": "runway video try",
+      "url": "https://www.youtube.com/watch?v=1U-KaAD7LS4",
+      "thumbnail": "https://i.ytimg.com/vi/1U-KaAD7LS4/mqdefault.jpg",
+      "views": 5,
+      "date": "2026-10-04"
+    },
+    {
+      "title": "Universal robots basic training of me",
+      "url": "https://www.youtube.com/watch?v=dWptEHYYpYA",
+      "thumbnail": "https://i.ytimg.com/vi/dWptEHYYpYA/mqdefault.jpg",
+      "views": 149,
+      "date": "2026-04-30"
+    },
+    {
+      "title": "Chrome and edge allow web pages to see do you have another monitor.  window.screen.isExtended",
+      "url": "https://www.youtube.com/watch?v=SYhloIKS79Q",
+      "thumbnail": "https://i.ytimg.com/vi/SYhloIKS79Q/mqdefault.jpg",
+      "views": 140,
+      "date": "2026-04-07"
+    }
+  ],
+  "github": [
+    {
+      "name": "turkey-geolocations",
+      "url": "https://github.com/caglarsarikaya/turkey-geolocations",
+      "description": "türkiyedeki tüm illerin, ilçelerin ve mahallelerin listesini bulabilirsiniz. İl ve ilçelerin koordinat bilgileri ve plaka kodları da eklidir.",
+      "language": "",
+      "stars": 31
+    },
+    {
+      "name": "postman-collections",
+      "url": "https://github.com/caglarsarikaya/postman-collections",
+      "description": "istanbul otobüs saatleri api postman collection iett",
+      "language": "",
+      "stars": 3
+    },
+    {
+      "name": "RabbitMQ-Learning",
+      "url": "https://github.com/caglarsarikaya/RabbitMQ-Learning",
+      "description": "I am catching the rabbit :)",
+      "language": "C#",
+      "stars": 1
+    },
+    {
+      "name": "investment-analysis",
+      "url": "https://github.com/caglarsarikaya/investment-analysis",
+      "description": "",
+      "language": "Python",
+      "stars": 0
+    },
+    {
+      "name": "HumanTrustRatio",
+      "url": "https://github.com/caglarsarikaya/HumanTrustRatio",
+      "description": "",
+      "language": "Python",
+      "stars": 0
+    }
+  ]
+}
