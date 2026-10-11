@@ -420,8 +420,9 @@ h2 {
 }
 
 .work-card {
-  display: grid;
-  grid-template-rows: 150px 1fr;
+  display: flex;
+  flex-direction: column;
+  position: relative;
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
@@ -432,54 +433,23 @@ h2 {
   border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
 }
 
-.work-media {
-  display: block;
-  background: var(--surface-2);
-  min-height: 100%;
-  overflow: hidden;
+.work-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--hint));
+  opacity: 0.35;
+  transition: opacity 0.25s ease;
 }
 
-.work-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0;
-  transition: transform 0.4s ease;
-}
-
-.work-card:hover .work-media img {
-  transform: scale(1.04);
-}
-
-.monogram {
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at 30% 25%, var(--accent-soft), transparent 60%),
-    var(--surface-2);
-}
-
-.monogram span {
-  font-family: var(--font-display);
-  font-size: 4.5rem;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--accent);
-  opacity: 0.55;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.work-card:hover .monogram span {
-  opacity: 0.85;
-  transform: scale(1.05);
-}
-
-.monogram:hover {
-  text-decoration: none;
+.work-card:hover::before {
+  opacity: 1;
 }
 
 .work-body {
-  padding: 1.4rem 1.5rem;
+  flex: 1;
+  padding: 1.5rem 1.5rem 1.4rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -951,10 +921,6 @@ main > article img {
     grid-template-columns: 1fr;
   }
 
-  .work-card {
-    grid-template-columns: 34% 1fr;
-    grid-template-rows: none;
-  }
 
   .video-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1033,10 +999,6 @@ main > article img {
     padding: 1.1rem 1.2rem;
   }
 
-  .monogram span {
-    font-size: 3rem;
-  }
-
   .post {
     grid-template-columns: 1.5rem 1fr;
   }
@@ -1069,11 +1031,6 @@ main > article img {
 
   .nav {
     width: 100%;
-  }
-
-  .work-card {
-    grid-template-columns: 1fr;
-    grid-template-rows: 110px auto;
   }
 
   .featured-post {
