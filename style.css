@@ -147,11 +147,21 @@ header {
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.15rem;
-  letter-spacing: 0.02em;
+  font-weight: 500;
+  font-size: 1.02rem;
   color: var(--ink);
+}
+
+.brand img {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px var(--line);
+  transition: transform 0.25s ease;
 }
 
 .brand:hover {
@@ -159,8 +169,8 @@ header {
   color: var(--accent);
 }
 
-.brand span {
-  color: var(--hint);
+.brand:hover img {
+  transform: rotate(-6deg);
 }
 
 .nav {
@@ -912,6 +922,10 @@ main > article img {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 959px) {
+  .brand-name {
+    display: none;
+  }
+
   .hero-grid,
   .split {
     grid-template-columns: 1fr;

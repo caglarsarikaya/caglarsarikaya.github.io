@@ -156,7 +156,10 @@ class SiteHeader extends HTMLElement {
     this.innerHTML = `
       <header role="banner">
         <div class="header-inner">
-          <a class="brand" href="index.html" aria-label="Home">ÇCS<span>.</span></a>
+          <a class="brand" href="index.html" aria-label="Çağlar Can Sarıkaya, home">
+            <img src="assets/images/logo-96.png" alt="" width="36" height="36">
+            <span class="brand-name">Çağlar Can Sarıkaya</span>
+          </a>
           <nav aria-label="Main navigation" class="nav">
             <a href="index.html#projects">Projects</a>
             <a href="index.html#blog">Blog</a>
