@@ -8,7 +8,7 @@ function injectGlobalHead() {
   head.insertAdjacentHTML('beforeend', `
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Source+Code+Pro:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   `);
 
   // Google Analytics - must use createElement for script to execute
@@ -155,17 +155,16 @@ class SiteHeader extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
       <header role="banner">
-        <nav aria-label="Main navigation" class="nav-centered">
-          <a href="index.html#about">About</a>
-          <span class="nav-divider">/</span>
-          <a href="index.html#experience">Experience</a>
-          <span class="nav-divider">/</span>
-          <a href="index.html#projects">Projects</a>
-          <span class="nav-divider">/</span>
-          <a href="index.html#latest">Latest</a>
-          <span class="nav-divider">/</span>
-          <a href="index.html#contact">Contact</a>
-        </nav>
+        <div class="header-inner">
+          <a class="brand" href="index.html" aria-label="Home">ÇCS<span>.</span></a>
+          <nav aria-label="Main navigation" class="nav">
+            <a href="index.html#projects">Projects</a>
+            <a href="index.html#blog">Blog</a>
+            <a href="index.html#repos">Repos</a>
+            <a href="index.html#videos">Videos</a>
+            <a href="index.html#contact">Contact</a>
+          </nav>
+        </div>
       </header>
     `;
   }
@@ -178,7 +177,9 @@ class SiteFooter extends HTMLElement {
     this.innerHTML = `
       <footer>
         <div class="footer-content">
-          <p>&copy; 2026 Çağlar Can Sarıkaya</p>
+          <span>&copy; ${new Date().getFullYear()} Çağlar Can Sarıkaya</span>
+          <span data-feeds-updated></span>
+          <a href="#top" onclick="window.scrollTo({ top: 0 }); return false;">Back to top &uarr;</a>
         </div>
       </footer>
     `;
@@ -203,49 +204,93 @@ function link(href, text) {
 }
 
 function formatDate(iso) {
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+}
+
+const LANG_COLORS = {
+  'C#': '#178600',
+  Python: '#3572A5',
+  TypeScript: '#3178c6',
+  JavaScript: '#f1e05a',
+  HTML: '#e34c26',
+  Vue: '#41b883'
+};
+
+const PLAY_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+
+function formatViews(n) {
+  if (!n) return '';
+  return `${n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : n} views`;
+}
+
+function fillFeed(selector, items, render) {
+  const container = document.querySelector(selector);
+  if (!container) return;
+  items.forEach((item, i) => container.append(render(item, i)));
+  container.classList.remove('skeleton');
 }
 
 async function renderFeeds() {
-  const section = document.getElementById('latest');
-  if (!section) return;
+  if (!document.querySelector('[data-feed]')) return;
 
   let data;
   try {
     const res = await fetch('data/feeds.json');
-    if (!res.ok) return;
+    if (!res.ok) throw new Error(res.status);
     data = await res.json();
   } catch {
-    return; // the "All posts / channel / repos" links still work
+    // Feeds unavailable: drop the skeletons, the "see all" links still work
+    document.querySelectorAll('[data-feed]').forEach(c => c.classList.remove('skeleton'));
+    return;
   }
 
-  const medium = section.querySelector('[data-feed="medium"]');
-  (data.medium || []).forEach(post => {
+  fillFeed('[data-feed="medium"]', data.medium || [], (post, i) => {
     const li = el('li');
-    li.append(link(post.url, post.title), el('span', 'feed-meta', formatDate(post.date)));
-    medium.append(li);
+    const a = link(post.url, '');
+    a.className = 'post';
+    const time = el('time', '', formatDate(post.date));
+    time.dateTime = post.date;
+    a.append(el('span', 'post-num', String(i + 1).padStart(2, '0')), el('span', 'post-title', post.title), time);
+    li.append(a);
+    return li;
   });
 
-  const youtube = section.querySelector('[data-feed="youtube"]');
-  (data.youtube || []).forEach(video => {
+  fillFeed('[data-feed="github"]', data.github || [], repo => {
+    const a = link(repo.url, '');
+    a.className = 'repo-card';
+    const top = el('div', 'repo-top');
+    top.append(el('span', 'repo-name', repo.name));
+    if (repo.language) {
+      const lang = el('span', 'repo-meta');
+      const dot = el('span', 'lang-dot');
+      dot.style.background = LANG_COLORS[repo.language] || '';
+      lang.append(dot, repo.language);
+      top.append(lang);
+    }
+    if (repo.stars) top.append(el('span', 'repo-meta', `★ ${repo.stars}`));
+    a.append(top);
+    if (repo.description) a.append(el('span', 'repo-desc', repo.description));
+    return a;
+  });
+
+  fillFeed('[data-feed="youtube"]', data.youtube || [], video => {
     const a = link(video.url, '');
+    a.className = 'video-tile';
+    const thumb = el('span', 'video-thumb');
     const img = el('img');
     img.src = video.thumbnail;
-    img.alt = video.title;
+    img.alt = '';
     img.loading = 'lazy';
-    a.append(img, el('span', 'video-title', video.title));
-    youtube.append(a);
+    const play = el('span', 'play');
+    play.innerHTML = PLAY_ICON; // static markup, no feed data
+    thumb.append(img, play);
+    const meta = [formatViews(video.views), formatDate(video.date)].filter(Boolean).join(' · ');
+    a.append(thumb, el('span', 'video-title', video.title), el('span', 'video-meta', meta));
+    return a;
   });
 
-  const github = section.querySelector('[data-feed="github"]');
-  (data.github || []).forEach(repo => {
-    const li = el('li');
-    const meta = [repo.language, repo.stars ? `★ ${repo.stars}` : ''].filter(Boolean).join(' · ');
-    li.append(link(repo.url, repo.name));
-    if (meta) li.append(el('span', 'feed-meta', meta));
-    if (repo.description) li.append(el('span', 'feed-desc', repo.description));
-    github.append(li);
-  });
+  const updated = document.querySelector('[data-feeds-updated]');
+  if (updated && data.updated) updated.textContent = `Feeds updated ${formatDate(data.updated)}`;
 }
 
 // Execute head injection when the script loads
