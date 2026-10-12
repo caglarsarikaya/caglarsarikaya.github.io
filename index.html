@@ -175,7 +175,7 @@
       </aside>
     </section>
 
-    <!-- Projects -->
+    <!-- Projects: real ones are static, fun ones come from GitHub repos tagged "fun-project" (data/feeds.json) -->
     <section id="projects">
       <div class="section-head">
         <h2>Projects</h2>
@@ -191,34 +191,15 @@
             <div class="tags"><span>ASP.NET MVC</span><span>SQL Server</span><span>AI-assisted</span></div>
           </div>
         </article>
-
-        <article class="card work-card">
-          <div class="work-body">
-            <span class="badge">Launching 2026</span>
-            <h3><a href="https://techpaiko.pages.dev/" target="_blank" rel="noopener">U.S. Citizenship Test Prep</a></h3>
-            <p>iOS and Android app that helps people prepare for the USCIS civics test. In closed testing on Google Play.</p>
-            <div class="tags"><span>React Native</span><span>TypeScript</span></div>
-          </div>
-        </article>
-
-        <article class="card work-card">
-          <div class="work-body">
-            <span class="badge">HackPSU 2026</span>
-            <h3><a href="https://github.com/caglarsarikaya/HumanTrustRatio" target="_blank" rel="noopener">HumanTrustRatio</a></h3>
-            <p>Built in 24 hours: LLM agents research a candidate's public footprint and cross-check it against their resume.</p>
-            <div class="tags"><span>Python</span><span>LangChain</span><span>Multi-agent</span></div>
-          </div>
-        </article>
-
-        <article class="card work-card">
-          <div class="work-body">
-            <span class="badge">Play in browser</span>
-            <h3><a href="https://caglarsarikaya.github.io/TightropeWalker/" target="_blank" rel="noopener">Tightrope Walker</a></h3>
-            <p>A balancing game: cross a rope between mountain peaks, leaning against the wind to stay on. Arrow keys or W/A/D.</p>
-            <div class="tags"><span>JavaScript</span><span>Vite</span><span>Game</span></div>
-          </div>
-        </article>
       </div>
+    </section>
+
+    <section id="fun">
+      <div class="section-head">
+        <h2>Fun Projects</h2>
+        <span class="section-note">Small games and experiments, playable in the browser</span>
+      </div>
+      <div class="work-grid fun-grid skeleton" data-feed="fun"></div>
     </section>
 
     <!-- Blog + GitHub repos (Medium and GitHub filled from data/feeds.json, built daily by GitHub Actions) -->
@@ -226,18 +207,9 @@
       <section id="blog" class="card panel">
         <div class="section-head">
           <h2>Blog</h2>
+          <div class="feed-toggle" data-toggle="medium" role="group" aria-label="Sort" hidden><button type="button" data-mode="latest" aria-pressed="true">Latest</button><button type="button" data-mode="popular" aria-pressed="false">Popular</button></div>
           <a class="see-all" href="https://caglarcansarikaya.medium.com/" target="_blank" rel="noopener">All on Medium <svg><use href="#i-arrow"/></svg></a>
         </div>
-
-        <!-- Posts hosted on this site -->
-        <a class="featured-post" href="news-portal.html">
-          <img src="assets/images/simple-content-management-system-design.png" alt="" loading="lazy">
-          <span class="featured-body">
-            <span class="badge">System design</span>
-            <span class="featured-title">Monolithic News Portal Infrastructure</span>
-            <span class="featured-desc">Load balancing, Varnish, MongoDB and capacity planning &mdash; and when a monolith has to evolve.</span>
-          </span>
-        </a>
 
         <ol class="post-list skeleton" data-feed="medium"></ol>
       </section>
@@ -245,6 +217,7 @@
       <section id="repos" class="card panel">
         <div class="section-head">
           <h2>GitHub Repos</h2>
+          <div class="feed-toggle" data-toggle="github" role="group" aria-label="Sort" hidden><button type="button" data-mode="latest" aria-pressed="true">Latest</button><button type="button" data-mode="popular" aria-pressed="false">Popular</button></div>
           <a class="see-all" href="https://github.com/caglarsarikaya?tab=repositories" target="_blank" rel="noopener">All repos <svg><use href="#i-arrow"/></svg></a>
         </div>
         <div class="repo-list skeleton" data-feed="github"></div>
@@ -255,6 +228,7 @@
     <section id="videos">
       <div class="section-head">
         <h2>Videos</h2>
+        <div class="feed-toggle" data-toggle="youtube" role="group" aria-label="Sort" hidden><button type="button" data-mode="latest" aria-pressed="true">Latest</button><button type="button" data-mode="popular" aria-pressed="false">Popular</button></div>
         <a class="see-all" href="https://www.youtube.com/@caglarcansarikaya" target="_blank" rel="noopener">YouTube <svg><use href="#i-arrow"/></svg></a>
       </div>
       <div class="video-grid skeleton" data-feed="youtube"></div>

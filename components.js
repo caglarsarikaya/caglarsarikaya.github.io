@@ -111,7 +111,7 @@ function initAnalytics() {
     }
 
     // Track project link clicks
-    if (href.includes('-portal') || link.closest('#projects')) {
+    if (link.closest('#projects, #fun')) {
       gtag('event', 'project_click', {
         'event_category': 'projects',
         'event_label': href
@@ -162,6 +162,7 @@ class SiteHeader extends HTMLElement {
           </a>
           <nav aria-label="Main navigation" class="nav">
             <a href="index.html#projects">Projects</a>
+            <a href="index.html#fun">Fun</a>
             <a href="index.html#blog">Blog</a>
             <a href="index.html#repos">Repos</a>
             <a href="index.html#videos">Videos</a>
@@ -229,8 +230,52 @@ function formatViews(n) {
 function fillFeed(selector, items, render) {
   const container = document.querySelector(selector);
   if (!container) return;
-  items.forEach((item, i) => container.append(render(item, i)));
+  container.replaceChildren(...items.map(render));
   container.classList.remove('skeleton');
+}
+
+// Feeds are { latest, popular }; older feeds.json files were a plain array
+function feedLists(feed) {
+  if (Array.isArray(feed)) return { latest: feed, popular: [] };
+  return { latest: feed?.latest || [], popular: feed?.popular || [] };
+}
+
+function savedMode(key) {
+  try {
+    return localStorage.getItem(`feed-mode:${key}`);
+  } catch {
+    return null;
+  }
+}
+
+function saveMode(key, mode) {
+  try {
+    localStorage.setItem(`feed-mode:${key}`, mode);
+  } catch { /* storage unavailable */ }
+}
+
+// Renders a feed with a Latest / Popular toggle; the toggle stays hidden when there is no popular list
+function fillToggledFeed(key, feed, render) {
+  const lists = feedLists(feed);
+  const toggle = document.querySelector(`[data-toggle="${key}"]`);
+  const show = mode => {
+    fillFeed(`[data-feed="${key}"]`, lists[mode], render);
+    toggle?.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+  };
+
+  if (!toggle || !lists.popular.length) {
+    show('latest');
+    return;
+  }
+
+  toggle.hidden = false;
+  toggle.addEventListener('click', e => {
+    const button = e.target.closest('button[data-mode]');
+    if (!button) return;
+    saveMode(key, button.dataset.mode);
+    show(button.dataset.mode);
+  });
+  show(savedMode(key) === 'popular' ? 'popular' : 'latest');
 }
 
 async function renderFeeds() {
@@ -247,7 +292,7 @@ async function renderFeeds() {
     return;
   }
 
-  fillFeed('[data-feed="medium"]', data.medium || [], (post, i) => {
+  fillToggledFeed('medium', data.medium, (post, i) => {
     const li = el('li');
     const a = link(post.url, '');
     a.className = 'post';
@@ -258,7 +303,7 @@ async function renderFeeds() {
     return li;
   });
 
-  fillFeed('[data-feed="github"]', data.github || [], repo => {
+  fillToggledFeed('github', data.github, repo => {
     const a = link(repo.url, '');
     a.className = 'repo-card';
     const top = el('div', 'repo-top');
@@ -276,7 +321,7 @@ async function renderFeeds() {
     return a;
   });
 
-  fillFeed('[data-feed="youtube"]', data.youtube || [], video => {
+  fillToggledFeed('youtube', data.youtube, video => {
     const a = link(video.url, '');
     a.className = 'video-tile';
     const thumb = el('span', 'video-thumb');
@@ -291,6 +336,26 @@ async function renderFeeds() {
     a.append(thumb, el('span', 'video-title', video.title), el('span', 'video-meta', meta));
     return a;
   });
+
+  fillFeed('[data-feed="fun"]', data.fun || [], project => {
+    const card = el('article', 'card work-card');
+    const body = el('div', 'work-body');
+    const h3 = el('h3');
+    h3.append(link(project.url, project.name.replace(/([a-z])([A-Z])/g, '$1 $2')));
+    body.append(el('span', 'badge', 'Play in browser'), h3);
+    if (project.description) body.append(el('p', '', project.description));
+    const tags = el('div', 'tags');
+    [project.language, ...(project.topics || [])].filter(Boolean).forEach(t => tags.append(el('span', '', t)));
+    const source = link(project.repo, 'Source');
+    source.className = 'work-source';
+    body.append(tags, source);
+    card.append(body);
+    return card;
+  });
+
+  // No tagged repos yet: hide the section instead of showing an empty grid
+  const fun = document.getElementById('fun');
+  if (fun && !(data.fun || []).length) fun.hidden = true;
 
   const updated = document.querySelector('[data-feeds-updated]');
   if (updated && data.updated) updated.textContent = `Feeds updated ${formatDate(data.updated)}`;
