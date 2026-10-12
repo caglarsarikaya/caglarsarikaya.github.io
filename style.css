@@ -427,7 +427,7 @@ h2 {
 /* ---------- Work ---------- */
 .work-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--gap);
 }
 
@@ -479,9 +479,17 @@ h2 {
   color: var(--ink);
 }
 
-.work-body h3 a:hover {
+.work-card:hover h3 a {
   color: var(--accent);
   text-decoration: none;
+}
+
+/* Stretch the title link over the whole card so the card is clickable */
+.work-body h3 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .work-body p {
