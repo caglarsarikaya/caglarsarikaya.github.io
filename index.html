@@ -127,120 +127,125 @@
     </defs>
   </svg>
 
-  <site-header></site-header>
-
   <main class="container">
 
-    <!-- Hero + Now -->
-    <section id="hero" class="hero-grid">
-      <div class="card hero">
-        <p class="eyebrow">Software engineer · Türkiye</p>
-        <h1>Çağlar Can Sarıkaya</h1>
-        <p class="hero-lead">
-          I build full-stack products with <strong>C#/.NET</strong> and <strong>React</strong>,
-          and lately, tools on top of <strong>LLMs</strong>. This is where I keep my work, writing and videos.
-        </p>
-        <p class="hero-credential">
-          Previously built the CMS behind NTV, Star TV and puhutv &mdash; 100M+ monthly visits.
-        </p>
-        <nav class="social" aria-label="Profiles">
-          <a href="https://github.com/caglarsarikaya" target="_blank" rel="noopener" aria-label="GitHub"><svg><use href="#i-github"/></svg><span>GitHub</span></a>
-          <a href="https://caglarcansarikaya.medium.com/" target="_blank" rel="noopener" aria-label="Medium"><svg><use href="#i-medium"/></svg><span>Medium</span></a>
-          <a href="https://www.youtube.com/@caglarcansarikaya" target="_blank" rel="noopener" aria-label="YouTube"><svg><use href="#i-youtube"/></svg><span>YouTube</span></a>
-          <a href="https://linkedin.com/in/caglarcansarikaya" target="_blank" rel="noopener" aria-label="LinkedIn"><svg><use href="#i-linkedin"/></svg><span>LinkedIn</span></a>
-        </nav>
-      </div>
+    <!-- Intro -->
+    <header class="intro">
+      <img class="intro-mark" src="assets/images/logo.svg" alt="" width="52" height="52">
+      <h1>Çağlar Can Sarıkaya</h1>
+      <p class="intro-lead">
+        Senior full-stack engineer &mdash; <strong>C#/.NET</strong>, <strong>React</strong>,
+        and tools built on <strong>LLMs</strong>. This is an exhibition of my work.
+      </p>
+      <nav class="social" aria-label="Profiles">
+        <a href="https://github.com/caglarsarikaya" target="_blank" rel="noopener" aria-label="GitHub"><svg><use href="#i-github"/></svg><span>GitHub</span></a>
+        <a href="https://caglarcansarikaya.medium.com/" target="_blank" rel="noopener" aria-label="Medium"><svg><use href="#i-medium"/></svg><span>Medium</span></a>
+        <a href="https://www.youtube.com/@caglarcansarikaya" target="_blank" rel="noopener" aria-label="YouTube"><svg><use href="#i-youtube"/></svg><span>YouTube</span></a>
+        <a href="https://linkedin.com/in/caglarcansarikaya" target="_blank" rel="noopener" aria-label="LinkedIn"><svg><use href="#i-linkedin"/></svg><span>LinkedIn</span></a>
+        <a href="mailto:caglarcansarikaya@gmail.com" aria-label="Email"><svg><use href="#i-mail"/></svg><span>Email</span></a>
+      </nav>
+    </header>
 
-      <aside class="card now">
-        <p class="eyebrow"><span class="pulse" aria-hidden="true"></span>Now</p>
-        <ul class="now-list">
-          <li>
-            <strong>U.S. Citizenship Test Prep</strong>
-            <span>React Native app for <a href="https://techpaiko.pages.dev/" target="_blank" rel="noopener">Techpaiko</a>, launching late 2026</span>
-          </li>
-          <li>
-            <strong><a href="https://bizsiziarariz.com" target="_blank" rel="noopener">bizsiziarariz.com</a></strong>
-            <span>Interview reviews &amp; company ratings, live</span>
-          </li>
-          <li>
-            <strong>Blog</strong>
-            <span>Notes on AI-assisted development</span>
-          </li>
-        </ul>
-        <div class="chips" aria-label="Stack">
-          <span class="chip">C#</span><span class="chip">.NET</span><span class="chip">React</span>
-          <span class="chip">React Native</span><span class="chip">TypeScript</span><span class="chip">Python</span>
-          <span class="chip">Kubernetes</span><span class="chip">LangChain</span>
-        </div>
-      </aside>
-    </section>
-
-    <!-- Projects: real ones are static, fun ones come from GitHub repos tagged "fun-project" (data/feeds.json) -->
-    <section id="projects">
+    <!-- Fun projects: add a new <article class="exhibit"> here for each one -->
+    <section id="fun" class="room">
       <div class="section-head">
-        <h2>Projects</h2>
-        <span class="section-note">Products I've built and shipped</span>
+        <div>
+          <p class="eyebrow"><span class="room-num"></span>Playground</p>
+          <h2>Vibe-coded with AI agents</h2>
+        </div>
+        <p class="section-note">Built by directing AI coding agents. Experiments, not hand-written code.</p>
       </div>
+      <div class="exhibit-grid">
+        <article class="exhibit">
+          <div class="preview" data-preview="https://caglarsarikaya.github.io/FallFight/" data-initial="F"></div>
+          <div class="exhibit-body">
+            <h3><a href="https://caglarsarikaya.github.io/FallFight/" target="_blank" rel="noopener">Fall Fight</a></h3>
+            <p>A multiplayer floor-breaking arena game.</p>
+            <div class="exhibit-foot">
+              <div class="tags"><span>JavaScript</span><span>Game</span></div>
+              <a class="exhibit-source" href="https://github.com/caglarsarikaya/FallFight" target="_blank" rel="noopener">Source</a>
+            </div>
+          </div>
+        </article>
 
-      <div class="work-grid">
-        <article class="card work-card">
-          <div class="work-body">
-            <span class="badge">Live</span>
-            <h3><a href="https://bizsiziarariz.com" target="_blank" rel="noopener">bizsiziarariz.com</a></h3>
-            <p>Candidates review job interviews and rate companies: anonymous posts, structured evaluations, company pages. Built solo.</p>
-            <div class="tags"><span>ASP.NET MVC</span><span>SQL Server</span><span>AI-assisted</span></div>
+        <article class="exhibit">
+          <div class="preview" data-preview="https://caglarsarikaya.github.io/TightropeWalker/" data-initial="T"></div>
+          <div class="exhibit-body">
+            <h3><a href="https://caglarsarikaya.github.io/TightropeWalker/" target="_blank" rel="noopener">Tightrope Walker</a></h3>
+            <p>A balancing game: cross a rope between mountain peaks, leaning against the wind.</p>
+            <div class="exhibit-foot">
+              <div class="tags"><span>JavaScript</span><span>Game</span></div>
+              <a class="exhibit-source" href="https://github.com/caglarsarikaya/TightropeWalker" target="_blank" rel="noopener">Source</a>
+            </div>
           </div>
         </article>
       </div>
     </section>
 
-    <section id="fun">
+    <!-- Real projects -->
+    <section id="projects" class="room">
       <div class="section-head">
-        <h2>Fun Projects</h2>
-        <span class="section-note">Small games and experiments, playable in the browser</span>
+        <div>
+          <p class="eyebrow"><span class="room-num"></span>Projects</p>
+          <h2>Built and shipped</h2>
+        </div>
       </div>
-      <div class="work-grid fun-grid skeleton" data-feed="fun"></div>
+
+      <article class="exhibit exhibit-wide">
+        <div class="preview" data-preview="https://bizsiziarariz.com" data-initial="B"></div>
+        <div class="exhibit-body">
+          <span class="badge">Live</span>
+          <h3><a href="https://bizsiziarariz.com" target="_blank" rel="noopener">bizsiziarariz.com</a></h3>
+          <p>Candidates review job interviews and rate companies: anonymous posts, structured evaluations, company pages. Built solo.</p>
+          <div class="tags"><span>ASP.NET MVC</span><span>SQL Server</span><span>AI-assisted</span></div>
+        </div>
+      </article>
     </section>
 
-    <!-- Blog + GitHub repos (Medium and GitHub filled from data/feeds.json, built daily by GitHub Actions) -->
+    <!-- Blog + GitHub repos (filled from data/feeds.json, built daily by GitHub Actions) -->
     <div class="split">
-      <section id="blog" class="card panel">
+      <section id="blog" class="room">
         <div class="section-head">
-          <h2>Blog</h2>
-          <div class="feed-toggle" data-toggle="medium" role="group" aria-label="Sort" hidden><button type="button" data-mode="latest" aria-pressed="true">Latest</button><button type="button" data-mode="popular" aria-pressed="false">Popular</button></div>
-          <a class="see-all" href="https://caglarcansarikaya.medium.com/" target="_blank" rel="noopener">All on Medium <svg><use href="#i-arrow"/></svg></a>
+          <div>
+            <p class="eyebrow"><span class="room-num"></span>Writing</p>
+            <h2>Blog</h2>
+          </div>
+          <div class="section-tools">
+            <div class="feed-toggle" data-toggle="medium" role="group" aria-label="Sort" hidden><button type="button" data-mode="latest" aria-pressed="true">Latest</button><button type="button" data-mode="popular" aria-pressed="false">Popular</button></div>
+            <a class="see-all" href="https://caglarcansarikaya.medium.com/" target="_blank" rel="noopener">Medium <svg><use href="#i-arrow"/></svg></a>
+          </div>
         </div>
-
         <ol class="post-list skeleton" data-feed="medium"></ol>
       </section>
 
-      <section id="repos" class="card panel">
+      <section id="repos" class="room">
         <div class="section-head">
-          <h2>GitHub Repos</h2>
-          <div class="feed-toggle" data-toggle="github" role="group" aria-label="Sort" hidden><button type="button" data-mode="latest" aria-pressed="true">Latest</button><button type="button" data-mode="popular" aria-pressed="false">Popular</button></div>
-          <a class="see-all" href="https://github.com/caglarsarikaya?tab=repositories" target="_blank" rel="noopener">All repos <svg><use href="#i-arrow"/></svg></a>
+          <div>
+            <p class="eyebrow"><span class="room-num"></span>Code</p>
+            <h2>GitHub Repos</h2>
+          </div>
+          <div class="section-tools">
+            <div class="feed-toggle" data-toggle="github" data-default="popular" role="group" aria-label="Sort" hidden><button type="button" data-mode="latest" aria-pressed="true">Latest</button><button type="button" data-mode="popular" aria-pressed="false">Popular</button></div>
+            <a class="see-all" href="https://github.com/caglarsarikaya?tab=repositories" target="_blank" rel="noopener">All <svg><use href="#i-arrow"/></svg></a>
+          </div>
         </div>
         <div class="repo-list skeleton" data-feed="github"></div>
       </section>
     </div>
 
     <!-- Videos -->
-    <section id="videos">
+    <section id="videos" class="room">
       <div class="section-head">
-        <h2>Videos</h2>
-        <div class="feed-toggle" data-toggle="youtube" role="group" aria-label="Sort" hidden><button type="button" data-mode="latest" aria-pressed="true">Latest</button><button type="button" data-mode="popular" aria-pressed="false">Popular</button></div>
-        <a class="see-all" href="https://www.youtube.com/@caglarcansarikaya" target="_blank" rel="noopener">YouTube <svg><use href="#i-arrow"/></svg></a>
+        <div>
+          <p class="eyebrow"><span class="room-num"></span>Videos</p>
+          <h2>On YouTube</h2>
+        </div>
+        <div class="section-tools">
+          <div class="feed-toggle" data-toggle="youtube" data-default="popular" role="group" aria-label="Sort" hidden><button type="button" data-mode="latest" aria-pressed="true">Latest</button><button type="button" data-mode="popular" aria-pressed="false">Popular</button></div>
+          <a class="see-all" href="https://www.youtube.com/@caglarcansarikaya" target="_blank" rel="noopener">Channel <svg><use href="#i-arrow"/></svg></a>
+        </div>
       </div>
       <div class="video-grid skeleton" data-feed="youtube"></div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="card contact">
-      <div>
-        <h2 class="contact-title">Have a project or a role in mind?</h2>
-        <p>Open to senior full-stack (.NET / React) and AI engineering work, remote across time zones.</p>
-      </div>
-      <a class="button" href="mailto:caglarcansarikaya@gmail.com"><svg><use href="#i-mail"/></svg>caglarcansarikaya@gmail.com</a>
     </section>
 
   </main>

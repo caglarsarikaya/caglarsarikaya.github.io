@@ -150,32 +150,7 @@ function initAnalytics() {
   });
 }
 
-// 3. Shared Header Component
-class SiteHeader extends HTMLElement {
-  connectedCallback() {
-    this.innerHTML = `
-      <header role="banner">
-        <div class="header-inner">
-          <a class="brand" href="index.html" aria-label="Çağlar Can Sarıkaya, home">
-            <img src="assets/images/logo.svg" alt="" width="36" height="36">
-            <span class="brand-name">Çağlar Can Sarıkaya</span>
-          </a>
-          <nav aria-label="Main navigation" class="nav">
-            <a href="index.html#projects">Projects</a>
-            <a href="index.html#fun">Fun</a>
-            <a href="index.html#blog">Blog</a>
-            <a href="index.html#repos">Repos</a>
-            <a href="index.html#videos">Videos</a>
-            <a href="index.html#contact">Contact</a>
-          </nav>
-        </div>
-      </header>
-    `;
-  }
-}
-customElements.define('site-header', SiteHeader);
-
-// 4. Shared Footer Component
+// 3. Shared Footer Component
 class SiteFooter extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
@@ -191,7 +166,7 @@ class SiteFooter extends HTMLElement {
 }
 customElements.define('site-footer', SiteFooter);
 
-// 5. Latest feeds (Medium, YouTube, GitHub) from data/feeds.json
+// 4. Latest feeds (Medium, YouTube, GitHub) from data/feeds.json
 function el(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -254,7 +229,8 @@ function saveMode(key, mode) {
   } catch { /* storage unavailable */ }
 }
 
-// Renders a feed with a Latest / Popular toggle; the toggle stays hidden when there is no popular list
+// Renders a feed with a Latest / Popular toggle; the toggle stays hidden when there is no popular list.
+// Starts on the visitor's last choice, else the toggle's data-default, else latest.
 function fillToggledFeed(key, feed, render) {
   const lists = feedLists(feed);
   const toggle = document.querySelector(`[data-toggle="${key}"]`);
@@ -275,7 +251,40 @@ function fillToggledFeed(key, feed, render) {
     saveMode(key, button.dataset.mode);
     show(button.dataset.mode);
   });
-  show(savedMode(key) === 'popular' ? 'popular' : 'latest');
+  const mode = savedMode(key) || toggle.dataset.default;
+  show(mode === 'popular' ? 'popular' : 'latest');
+}
+
+// Live previews for project tiles: each .preview[data-preview] gets a scaled-down, non-interactive
+// iframe of the site, created only when the tile comes near the viewport
+const PREVIEW_WIDTH = 1280;
+
+const previewResize = new ResizeObserver(entries => {
+  entries.forEach(e => e.target.style.setProperty('--scale', e.contentRect.width / PREVIEW_WIDTH));
+});
+
+const previewLoad = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    observer.unobserve(entry.target);
+    const frame = document.createElement('iframe');
+    frame.src = entry.target.dataset.preview;
+    frame.tabIndex = -1;
+    frame.loading = 'lazy';
+    frame.setAttribute('aria-hidden', 'true');
+    frame.setAttribute('scrolling', 'no');
+    frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    frame.addEventListener('load', () => entry.target.classList.add('loaded'), { once: true });
+    entry.target.append(frame);
+  });
+}, { rootMargin: '300px' });
+
+function mountPreviews() {
+  document.querySelectorAll('.preview[data-preview]:not([data-mounted])').forEach(tile => {
+    tile.dataset.mounted = '';
+    previewResize.observe(tile);
+    previewLoad.observe(tile);
+  });
 }
 
 async function renderFeeds() {
@@ -317,7 +326,8 @@ async function renderFeeds() {
     }
     if (repo.stars) top.append(el('span', 'repo-meta', `★ ${repo.stars}`));
     a.append(top);
-    if (repo.description) a.append(el('span', 'repo-desc', repo.description));
+    // Always present (even empty) so every card has the same height and switching lists doesn't shift the page
+    a.append(el('span', 'repo-desc', repo.description));
     return a;
   });
 
@@ -337,26 +347,6 @@ async function renderFeeds() {
     return a;
   });
 
-  fillFeed('[data-feed="fun"]', data.fun || [], project => {
-    const card = el('article', 'card work-card');
-    const body = el('div', 'work-body');
-    const h3 = el('h3');
-    h3.append(link(project.url, project.name.replace(/([a-z])([A-Z])/g, '$1 $2')));
-    body.append(el('span', 'badge', 'Play in browser'), h3);
-    if (project.description) body.append(el('p', '', project.description));
-    const tags = el('div', 'tags');
-    [project.language, ...(project.topics || [])].filter(Boolean).forEach(t => tags.append(el('span', '', t)));
-    const source = link(project.repo, 'Source');
-    source.className = 'work-source';
-    body.append(tags, source);
-    card.append(body);
-    return card;
-  });
-
-  // No tagged repos yet: hide the section instead of showing an empty grid
-  const fun = document.getElementById('fun');
-  if (fun && !(data.fun || []).length) fun.hidden = true;
-
   const updated = document.querySelector('[data-feeds-updated]');
   if (updated && data.updated) updated.textContent = `Feeds updated ${formatDate(data.updated)}`;
 }
@@ -367,6 +357,7 @@ injectGlobalHead();
 // Initialize analytics and feeds after DOM is ready
 function onReady() {
   initAnalytics();
+  mountPreviews();
   renderFeeds();
 }
 

@@ -12,8 +12,6 @@ const YOUTUBE_CHANNEL_ID = 'UCMWjbVnHmh2kKnqNYTYkj8Q'; // if empty, resolved fro
 // Videos to keep off the site (personal / not portfolio material)
 const YOUTUBE_HIDDEN = ['ajCpDP_ZVPQ'];
 const GITHUB_USER = 'caglarsarikaya';
-// Repos with this topic are shown as playable fun projects instead of in the repo list
-const FUN_TOPIC = 'fun-project';
 
 const UA = { 'User-Agent': 'Mozilla/5.0 (caglarsarikaya.github.io feed builder)' };
 
@@ -97,19 +95,9 @@ async function youtube() {
   return { latest: videos.slice(0, 4), popular: top(videos, 'views', 4) };
 }
 
-// Fetched once, shared by github() and fun()
-let reposPromise;
-function ownRepos() {
-  reposPromise ??= get(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=pushed`, 'json')
-    .then(repos => repos.filter(r => !r.fork && !r.archived && r.name !== `${GITHUB_USER}.github.io`));
-  return reposPromise;
-}
-
-const isFun = r => (r.topics || []).includes(FUN_TOPIC);
-
 async function github() {
-  const repos = (await ownRepos())
-    .filter(r => !isFun(r))
+  const repos = (await get(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=pushed`, 'json'))
+    .filter(r => !r.fork && !r.archived && r.name !== `${GITHUB_USER}.github.io`)
     .map(r => ({
       name: r.name,
       url: r.html_url,
@@ -120,20 +108,6 @@ async function github() {
     }));
   // API returns them most recently pushed first
   return { latest: repos.slice(0, 5), popular: top(repos, 'stars', 5) };
-}
-
-async function fun() {
-  return (await ownRepos())
-    .filter(r => isFun(r) && (r.homepage || r.has_pages))
-    .map(r => ({
-      name: r.name,
-      url: r.homepage || `https://${GITHUB_USER}.github.io/${r.name}/`,
-      repo: r.html_url,
-      description: r.description || '',
-      language: r.language || '',
-      topics: (r.topics || []).filter(t => t !== FUN_TOPIC),
-      pushed: r.pushed_at
-    }));
 }
 
 let previous = {};
@@ -147,7 +121,7 @@ function count(data) {
     : `${data.latest.length} latest, ${data.popular.length} popular`;
 }
 
-const sources = { medium, youtube, github, fun };
+const sources = { medium, youtube, github };
 const result = { updated: new Date().toISOString() };
 
 for (const [key, fn] of Object.entries(sources)) {
