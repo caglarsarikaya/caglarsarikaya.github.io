@@ -1,97 +1,187 @@
 {
-  "updated": "2026-10-12T11:11:09.790Z",
-  "medium": [
-    {
-      "title": "Spent 2k Tokens While Trying to Make a 60-Second Video with Runway",
-      "url": "https://caglarcansarikaya.medium.com/trying-to-make-a-60-second-video-with-runway-f94e05d9ee39",
-      "date": "2026-10-04"
-    },
-    {
-      "title": "My First AI Coding Loop Wrote 2,800 Lines of Code and Changed Nothing",
-      "url": "https://caglarcansarikaya.medium.com/my-first-ai-coding-loop-wrote-2-800-lines-of-code-and-changed-nothing-7c73ba327cde",
-      "date": "2026-10-01"
-    },
-    {
-      "title": "Understanding “Your target project doesn’t match your migrations assembly” in Entity Framework Core",
-      "url": "https://caglarcansarikaya.medium.com/understanding-your-target-project-doesnt-match-your-migrations-assembly-in-entity-framework-core-d76ede58c4a4",
-      "date": "2025-11-24"
-    },
-    {
-      "title": "Exporting MongoDB Aggregation Results in Compass (v1.28.4, MongoDB 3.2.22)",
-      "url": "https://caglarcansarikaya.medium.com/exporting-mongodb-aggregation-results-in-compass-v1-28-4-mongodb-3-2-22-b934fa2ebc34",
-      "date": "2025-10-01"
-    },
-    {
-      "title": "Understanding __main__ in Python",
-      "url": "https://caglarcansarikaya.medium.com/understanding-main-in-python-86eeca89c5a6",
-      "date": "2025-09-24"
-    }
-  ],
-  "youtube": [
-    {
-      "title": "runway first try",
-      "url": "https://www.youtube.com/watch?v=dz5a66VZFBQ",
-      "thumbnail": "https://i.ytimg.com/vi/dz5a66VZFBQ/mqdefault.jpg",
-      "views": 3,
-      "date": "2026-10-04"
-    },
-    {
-      "title": "runway video try",
-      "url": "https://www.youtube.com/watch?v=1U-KaAD7LS4",
-      "thumbnail": "https://i.ytimg.com/vi/1U-KaAD7LS4/mqdefault.jpg",
-      "views": 5,
-      "date": "2026-10-04"
-    },
-    {
-      "title": "Universal robots basic training of me",
-      "url": "https://www.youtube.com/watch?v=dWptEHYYpYA",
-      "thumbnail": "https://i.ytimg.com/vi/dWptEHYYpYA/mqdefault.jpg",
-      "views": 149,
-      "date": "2026-04-30"
-    },
-    {
-      "title": "Chrome and edge allow web pages to see do you have another monitor.  window.screen.isExtended",
-      "url": "https://www.youtube.com/watch?v=SYhloIKS79Q",
-      "thumbnail": "https://i.ytimg.com/vi/SYhloIKS79Q/mqdefault.jpg",
-      "views": 141,
-      "date": "2026-04-07"
-    }
-  ],
-  "github": [
-    {
-      "name": "turkey-geolocations",
-      "url": "https://github.com/caglarsarikaya/turkey-geolocations",
-      "description": "türkiyedeki tüm illerin, ilçelerin ve mahallelerin listesini bulabilirsiniz. İl ve ilçelerin koordinat bilgileri ve plaka kodları da eklidir.",
-      "language": "",
-      "stars": 31
-    },
-    {
-      "name": "postman-collections",
-      "url": "https://github.com/caglarsarikaya/postman-collections",
-      "description": "istanbul otobüs saatleri api postman collection iett",
-      "language": "",
-      "stars": 3
-    },
-    {
-      "name": "RabbitMQ-Learning",
-      "url": "https://github.com/caglarsarikaya/RabbitMQ-Learning",
-      "description": "I am catching the rabbit :)",
-      "language": "C#",
-      "stars": 1
-    },
-    {
-      "name": "investment-analysis",
-      "url": "https://github.com/caglarsarikaya/investment-analysis",
-      "description": "",
-      "language": "Python",
-      "stars": 0
-    },
-    {
-      "name": "HumanTrustRatio",
-      "url": "https://github.com/caglarsarikaya/HumanTrustRatio",
-      "description": "",
-      "language": "Python",
-      "stars": 0
-    }
-  ]
+  "updated": "2026-10-12T22:36:30.360Z",
+  "medium": {
+    "latest": [
+      {
+        "title": "Spent 2k Tokens While Trying to Make a 60-Second Video with Runway",
+        "url": "https://caglarcansarikaya.medium.com/trying-to-make-a-60-second-video-with-runway-f94e05d9ee39",
+        "date": "2026-10-04",
+        "claps": 0
+      },
+      {
+        "title": "My First AI Coding Loop Wrote 2,800 Lines of Code and Changed Nothing",
+        "url": "https://caglarcansarikaya.medium.com/my-first-ai-coding-loop-wrote-2-800-lines-of-code-and-changed-nothing-7c73ba327cde",
+        "date": "2026-10-01",
+        "claps": 0
+      },
+      {
+        "title": "Understanding “Your target project doesn’t match your migrations assembly” in Entity Framework Core",
+        "url": "https://caglarcansarikaya.medium.com/understanding-your-target-project-doesnt-match-your-migrations-assembly-in-entity-framework-core-d76ede58c4a4",
+        "date": "2025-11-24",
+        "claps": 0
+      },
+      {
+        "title": "Exporting MongoDB Aggregation Results in Compass (v1.28.4, MongoDB 3.2.22)",
+        "url": "https://caglarcansarikaya.medium.com/exporting-mongodb-aggregation-results-in-compass-v1-28-4-mongodb-3-2-22-b934fa2ebc34",
+        "date": "2025-10-01",
+        "claps": 0
+      },
+      {
+        "title": "Understanding __main__ in Python",
+        "url": "https://caglarcansarikaya.medium.com/understanding-main-in-python-86eeca89c5a6",
+        "date": "2025-09-24",
+        "claps": 0
+      }
+    ],
+    "popular": []
+  },
+  "youtube": {
+    "latest": [
+      {
+        "title": "runway first try",
+        "url": "https://www.youtube.com/watch?v=dz5a66VZFBQ",
+        "thumbnail": "https://i.ytimg.com/vi/dz5a66VZFBQ/mqdefault.jpg",
+        "views": 3,
+        "date": "2026-10-04"
+      },
+      {
+        "title": "runway video try",
+        "url": "https://www.youtube.com/watch?v=1U-KaAD7LS4",
+        "thumbnail": "https://i.ytimg.com/vi/1U-KaAD7LS4/mqdefault.jpg",
+        "views": 5,
+        "date": "2026-10-04"
+      },
+      {
+        "title": "Universal robots basic training of me",
+        "url": "https://www.youtube.com/watch?v=dWptEHYYpYA",
+        "thumbnail": "https://i.ytimg.com/vi/dWptEHYYpYA/mqdefault.jpg",
+        "views": 149,
+        "date": "2026-04-30"
+      },
+      {
+        "title": "Chrome and edge allow web pages to see do you have another monitor.  window.screen.isExtended",
+        "url": "https://www.youtube.com/watch?v=SYhloIKS79Q",
+        "thumbnail": "https://i.ytimg.com/vi/SYhloIKS79Q/mqdefault.jpg",
+        "views": 141,
+        "date": "2026-04-07"
+      }
+    ],
+    "popular": [
+      {
+        "title": "Page testing application. Use when you need to be sure all urls are working.",
+        "url": "https://www.youtube.com/watch?v=lmRb-xfYtc8",
+        "thumbnail": "https://i.ytimg.com/vi/lmRb-xfYtc8/mqdefault.jpg",
+        "views": 331,
+        "date": "2025-04-16"
+      },
+      {
+        "title": "my comminication with ai #programming #gaming",
+        "url": "https://www.youtube.com/watch?v=OxgpoM3lqT4",
+        "thumbnail": "https://i.ytimg.com/vi/OxgpoM3lqT4/mqdefault.jpg",
+        "views": 307,
+        "date": "2025-04-07"
+      },
+      {
+        "title": "Claude opus 4.6 vibe coding experience",
+        "url": "https://www.youtube.com/watch?v=Tsl-mWbMuS8",
+        "thumbnail": "https://i.ytimg.com/vi/Tsl-mWbMuS8/mqdefault.jpg",
+        "views": 248,
+        "date": "2026-03-13"
+      },
+      {
+        "title": "How to Use Cursor AI Effectively for Coding Projects #cursor #aicoding #coding",
+        "url": "https://www.youtube.com/watch?v=mcCIym5CuFQ",
+        "thumbnail": "https://i.ytimg.com/vi/mcCIym5CuFQ/mqdefault.jpg",
+        "views": 242,
+        "date": "2025-04-16"
+      }
+    ]
+  },
+  "github": {
+    "latest": [
+      {
+        "name": "FallFight",
+        "url": "https://github.com/caglarsarikaya/FallFight",
+        "description": "this will be multiplayer floor braking game, I hope I will code this by ai agents",
+        "language": "JavaScript",
+        "stars": 0,
+        "pushed": "2026-10-12T22:17:32Z"
+      },
+      {
+        "name": "TightropeWalker",
+        "url": "https://github.com/caglarsarikaya/TightropeWalker",
+        "description": "",
+        "language": "JavaScript",
+        "stars": 0,
+        "pushed": "2026-10-12T19:25:33Z"
+      },
+      {
+        "name": "investment-analysis",
+        "url": "https://github.com/caglarsarikaya/investment-analysis",
+        "description": "",
+        "language": "Python",
+        "stars": 0,
+        "pushed": "2026-07-29T06:22:02Z"
+      },
+      {
+        "name": "HumanTrustRatio",
+        "url": "https://github.com/caglarsarikaya/HumanTrustRatio",
+        "description": "",
+        "language": "Python",
+        "stars": 0,
+        "pushed": "2026-03-29T12:51:17Z"
+      },
+      {
+        "name": "url-tester",
+        "url": "https://github.com/caglarsarikaya/url-tester",
+        "description": "This app helps you test your application's URLs. You can provide either a list of predefined URLs or a sitemap. The app will then send requests to each URL and generate a report highlighting which ones do not return a 200 OK status.",
+        "language": "Python",
+        "stars": 0,
+        "pushed": "2026-03-14T03:49:04Z"
+      }
+    ],
+    "popular": [
+      {
+        "name": "turkey-geolocations",
+        "url": "https://github.com/caglarsarikaya/turkey-geolocations",
+        "description": "türkiyedeki tüm illerin, ilçelerin ve mahallelerin listesini bulabilirsiniz. İl ve ilçelerin koordinat bilgileri ve plaka kodları da eklidir.",
+        "language": "",
+        "stars": 31,
+        "pushed": "2023-04-25T14:18:45Z"
+      },
+      {
+        "name": "postman-collections",
+        "url": "https://github.com/caglarsarikaya/postman-collections",
+        "description": "istanbul otobüs saatleri api postman collection iett",
+        "language": "",
+        "stars": 3,
+        "pushed": "2025-09-09T23:36:26Z"
+      },
+      {
+        "name": "RabbitMQ-Learning",
+        "url": "https://github.com/caglarsarikaya/RabbitMQ-Learning",
+        "description": "I am catching the rabbit :)",
+        "language": "C#",
+        "stars": 1,
+        "pushed": "2021-11-30T21:21:06Z"
+      },
+      {
+        "name": "FallFight",
+        "url": "https://github.com/caglarsarikaya/FallFight",
+        "description": "this will be multiplayer floor braking game, I hope I will code this by ai agents",
+        "language": "JavaScript",
+        "stars": 0,
+        "pushed": "2026-10-12T22:17:32Z"
+      },
+      {
+        "name": "TightropeWalker",
+        "url": "https://github.com/caglarsarikaya/TightropeWalker",
+        "description": "",
+        "language": "JavaScript",
+        "stars": 0,
+        "pushed": "2026-10-12T19:25:33Z"
+      }
+    ]
+  },
+  "fun": []
 }

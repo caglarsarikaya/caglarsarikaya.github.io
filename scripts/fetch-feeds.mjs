@@ -12,6 +12,8 @@ const YOUTUBE_CHANNEL_ID = 'UCMWjbVnHmh2kKnqNYTYkj8Q'; // if empty, resolved fro
 // Videos to keep off the site (personal / not portfolio material)
 const YOUTUBE_HIDDEN = ['ajCpDP_ZVPQ'];
 const GITHUB_USER = 'caglarsarikaya';
+// Repos with this topic are shown as playable fun projects instead of in the repo list
+const FUN_TOPIC = 'fun-project';
 
 const UA = { 'User-Agent': 'Mozilla/5.0 (caglarsarikaya.github.io feed builder)' };
 
@@ -43,14 +45,33 @@ function decode(s) {
     .replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'");
 }
 
+// Top n by a numeric field; empty when nothing has a value (no data to rank by)
+function top(items, field, n) {
+  if (!items.some(i => i[field] > 0)) return [];
+  return [...items].sort((a, b) => b[field] - a[field]).slice(0, n);
+}
+
+// Medium's RSS has no clap counts; the post JSON does, but Medium often blocks it (403)
+async function claps(url) {
+  try {
+    const text = await get(`${url}?format=json`);
+    const json = JSON.parse(text.slice(text.indexOf('{')));
+    return json.payload?.value?.virtuals?.totalClapCount || 0;
+  } catch {
+    return 0;
+  }
+}
+
 async function medium() {
   const xml = await get(MEDIUM_FEED);
   const items = xml.split('<item>').slice(1);
-  return items.slice(0, 5).map(item => ({
+  const posts = items.map(item => ({
     title: decode(tag(item, 'title')),
     url: tag(item, 'link').split('?')[0],
     date: new Date(tag(item, 'pubDate')).toISOString().slice(0, 10)
   }));
+  for (const post of posts) post.claps = await claps(post.url);
+  return { latest: posts.slice(0, 5), popular: top(posts, 'claps', 5) };
 }
 
 async function youtube() {
@@ -63,10 +84,9 @@ async function youtube() {
   }
   const xml = await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${id}`);
   const entries = xml.split('<entry>').slice(1);
-  return entries
+  const videos = entries
     .map(entry => ({ entry, videoId: tag(entry, 'yt:videoId') }))
     .filter(({ videoId }) => !YOUTUBE_HIDDEN.includes(videoId))
-    .slice(0, 4)
     .map(({ entry, videoId }) => ({
       title: decode(tag(entry, 'title')),
       url: `https://www.youtube.com/watch?v=${videoId}`,
@@ -74,20 +94,45 @@ async function youtube() {
       views: Number(attr(entry, 'media:statistics', 'views')) || 0,
       date: tag(entry, 'published').slice(0, 10)
     }));
+  return { latest: videos.slice(0, 4), popular: top(videos, 'views', 4) };
 }
 
+// Fetched once, shared by github() and fun()
+let reposPromise;
+function ownRepos() {
+  reposPromise ??= get(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=pushed`, 'json')
+    .then(repos => repos.filter(r => !r.fork && !r.archived && r.name !== `${GITHUB_USER}.github.io`));
+  return reposPromise;
+}
+
+const isFun = r => (r.topics || []).includes(FUN_TOPIC);
+
 async function github() {
-  const repos = await get(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=pushed`, 'json');
-  return repos
-    .filter(r => !r.fork && !r.archived && r.name !== `${GITHUB_USER}.github.io`)
-    .sort((a, b) => b.stargazers_count - a.stargazers_count || new Date(b.pushed_at) - new Date(a.pushed_at))
-    .slice(0, 5)
+  const repos = (await ownRepos())
+    .filter(r => !isFun(r))
     .map(r => ({
       name: r.name,
       url: r.html_url,
       description: r.description || '',
       language: r.language || '',
-      stars: r.stargazers_count
+      stars: r.stargazers_count,
+      pushed: r.pushed_at
+    }));
+  // API returns them most recently pushed first
+  return { latest: repos.slice(0, 5), popular: top(repos, 'stars', 5) };
+}
+
+async function fun() {
+  return (await ownRepos())
+    .filter(r => isFun(r) && (r.homepage || r.has_pages))
+    .map(r => ({
+      name: r.name,
+      url: r.homepage || `https://${GITHUB_USER}.github.io/${r.name}/`,
+      repo: r.html_url,
+      description: r.description || '',
+      language: r.language || '',
+      topics: (r.topics || []).filter(t => t !== FUN_TOPIC),
+      pushed: r.pushed_at
     }));
 }
 
@@ -96,17 +141,23 @@ try {
   previous = JSON.parse(await readFile(OUT, 'utf8'));
 } catch { /* first run */ }
 
-const sources = { medium, youtube, github };
+function count(data) {
+  return Array.isArray(data)
+    ? `${data.length} items`
+    : `${data.latest.length} latest, ${data.popular.length} popular`;
+}
+
+const sources = { medium, youtube, github, fun };
 const result = { updated: new Date().toISOString() };
 
 for (const [key, fn] of Object.entries(sources)) {
   try {
     result[key] = await fn();
-    console.log(`${key}: ${result[key].length} items`);
+    console.log(`${key}: ${count(result[key])}`);
   } catch (err) {
     // Keep last known data so one failing source never breaks the build
     result[key] = previous[key] || [];
-    console.warn(`${key}: failed (${err.message}), kept ${result[key].length} previous items`);
+    console.warn(`${key}: failed (${err.message}), kept previous (${count(result[key])})`);
   }
 }
 
