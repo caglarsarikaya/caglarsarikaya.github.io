@@ -1,8 +1,7 @@
 // visitor.js
-// The cursor is a light that parts the clouds, a click sends a ripple, scrolling tilts the view to the horizon
+// The cursor is a light that parts the clouds, scrolling tilts the view to the horizon
 
 export const pointer = { x: 0.5, y: 0.6, sx: 0.5, sy: 0.6, presence: 0, energy: 0, seen: 0 };
-export const ripple = { x: 0.5, y: 0.5, start: -1e9 };
 export const scroll = { y: window.scrollY, energy: 0 };
 
 export function onScroll() {
@@ -23,10 +22,4 @@ export function onPointerMove(e) {
 
 export function onPointerLeave() {
   pointer.seen = 0;
-}
-
-export function onPointerDown(e) {
-  ripple.x = e.clientX / innerWidth;
-  ripple.y = 1 - e.clientY / innerHeight;
-  ripple.start = performance.now();
 }

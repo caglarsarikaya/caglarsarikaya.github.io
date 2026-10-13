@@ -156,9 +156,13 @@
           <a href="mailto:caglarcansarikaya@gmail.com" aria-label="Email"><svg><use href="#i-mail"/></svg><span>Email</span></a>
         </nav>
         <!-- Filled by js/sky/: the visitor's sky behind the page -->
-        <button class="sky-chip" type="button" data-sky-chip aria-pressed="false" title="Play a day of this sky" hidden>
-          <span class="sky-dot"></span><span data-sky-label></span><span class="sky-play">&#9654; Play a day</span>
-        </button>
+        <div class="sky-chip" data-sky-chip hidden>
+          <span class="sky-dot"></span><span data-sky-label></span>
+          <span class="sky-actions">
+            <button class="sky-play" type="button" data-sky-play="day" aria-pressed="false" title="Play a day of this sky">&#9654; Play day</button>
+            <button class="sky-play" type="button" data-sky-play="year" aria-pressed="false" title="Play a year of this sky">&#9654; Play year</button>
+          </span>
+        </div>
       </div>
       <!-- Room index: filled from the sections below by js/site/room-index.js -->
       <nav class="room-index" aria-label="Sections">

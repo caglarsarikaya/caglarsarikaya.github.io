@@ -72,14 +72,15 @@
   background: var(--accent-soft);
 }
 
-/* Names the sky behind the page; plays a day of it on click */
+/* Names the sky behind the page; plays a day or a year of it.
+   A fixed width, so the chip doesn't resize as the time and weather words change */
 .sky-chip {
-  display: inline-flex;
+  display: flex;
+  width: min(100%, 38rem);
   align-items: center;
   gap: 0.6rem;
   margin-top: 1.25rem;
-  padding: 0.4rem 0.9rem 0.4rem 0.75rem;
-  font: inherit;
+  padding: 0.3rem 0.35rem 0.3rem 0.75rem;
   font-family: var(--font-mono);
   font-size: 0.74rem;
   line-height: 1.4;
@@ -90,7 +91,6 @@
   border-radius: 999px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  cursor: pointer;
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.9s ease, transform 0.9s ease, border-color 0.2s ease;
@@ -105,7 +105,17 @@
   border-color: var(--sky-sun, var(--accent));
 }
 
+/* Always one line; anything that still doesn't fit ends in "…" instead of wrapping */
+[data-sky-label] {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .sky-dot {
+  flex-shrink: 0;
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 50%;
@@ -118,15 +128,31 @@
   to { box-shadow: 0 0 0 0.65rem transparent; }
 }
 
-.sky-play {
-  color: var(--muted);
+.sky-actions {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 0.15rem;
   white-space: nowrap;
-  transition: color 0.2s ease;
 }
 
-.sky-chip:hover .sky-play,
-.sky-chip.is-playing .sky-play {
+.sky-play {
+  font: inherit;
+  white-space: nowrap;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.sky-play:hover,
+.sky-play:focus-visible,
+.sky-play[aria-pressed="true"] {
   color: var(--sky-sun, var(--accent));
+  border-color: color-mix(in srgb, var(--sky-sun, var(--accent)) 40%, transparent);
+  background: color-mix(in srgb, var(--sky-sun, var(--accent)) 8%, transparent);
 }
 
 /* Room index: a floor plan of the sections below */
@@ -186,6 +212,22 @@
 }
 
 @media (max-width: 639px) {
+  /* The sky chip: the label gets its own line, the play buttons sit under it */
+  .sky-chip {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+    padding: 0.45rem 0.45rem 0.35rem 0.75rem;
+    border-radius: 1rem;
+  }
+
+  [data-sky-label] {
+    flex-basis: calc(100% - 1.2rem);
+  }
+
+  .sky-actions {
+    margin-left: auto;
+  }
+
   .intro {
     padding: 3rem 0 0.5rem;
   }
