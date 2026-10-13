@@ -7,15 +7,16 @@ import { state, zone, root } from './state.js';
 export const chip = document.querySelector('[data-sky-chip]');
 const chipLabel = chip?.querySelector('[data-sky-label]');
 
-function format(date, opts) {
-  try {
-    return new Intl.DateTimeFormat('en-GB', { ...opts, timeZone: zone }).format(date);
-  } catch {
-    return new Intl.DateTimeFormat('en-GB', opts).format(date);
-  }
+// Built once: the chip is rewritten often while a day plays
+const CLOCK = { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' };
+let clockFormat;
+try {
+  clockFormat = new Intl.DateTimeFormat('en-GB', { ...CLOCK, timeZone: zone });
+} catch {
+  clockFormat = new Intl.DateTimeFormat('en-GB', CLOCK);
 }
-
-const clock = date => format(date, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+const clock = date => clockFormat.format(date);
+let sunColor = '';
 
 function hourWord(s, time) {
   const elev = s.sun.elevation;
@@ -39,7 +40,9 @@ export function writeChip(date, s, goal) {
   if (state.weatherKnown || state.play?.kind === 'year') parts.push(...describe(goal));
   const text = parts.join(' · ');
   if (chipLabel.textContent !== text) chipLabel.textContent = text;
-  root.style.setProperty('--sky-sun', `rgb(${s.bodyColor.map(v => Math.round(v * 255)).join(',')})`);
+  // Set on the root, so a change restyles the page: only when the colour really changes
+  const color = `rgb(${s.bodyColor.map(v => Math.round(v * 255)).join(',')})`;
+  if (color !== sunColor) root.style.setProperty('--sky-sun', sunColor = color);
 }
 
 // kind: 'day', 'year' or null. The playing button reads "Playing now" until it ends;

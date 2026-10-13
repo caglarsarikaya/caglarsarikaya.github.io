@@ -19,9 +19,9 @@ import { params, num, zone, state, weather, target, darkQuery, reducedQuery } fr
 import { locateByIp } from './location.js';
 import { loadWeather } from './weather.js';
 import { overrides } from './conditions.js';
-import { resize } from './shader.js';
+import { resize, program } from './shader.js';
 import { resizeGlass } from './glass.js';
-import { measureColumn, refreshSpots } from './layout.js';
+import { measureColumn, measureScroll, refreshSpots, onLayoutChange } from './layout.js';
 import { onScroll, onPointerMove, onPointerLeave } from './visitor.js';
 import { chip, setPlaying } from './chip.js';
 import { startTour } from './year.js';
@@ -36,10 +36,14 @@ state.weatherKnown = Object.keys(forced).length > 0;
 resize();
 resizeGlass();
 measureColumn();
+measureScroll();
+onLayoutChange(invalidate);
 refreshSpots();
-setInterval(refreshSpots, 1500); // feeds add video tiles after load
+// Feeds add video tiles after load, and their Latest / Popular switch replaces them
+const feedWatch = new MutationObserver(refreshSpots);
+document.querySelectorAll('[data-feed]').forEach(feed => feedWatch.observe(feed, { childList: true }));
 
-addEventListener('resize', () => { resize(); resizeGlass(); measureColumn(); invalidate(); });
+addEventListener('resize', () => { resize(); resizeGlass(); measureColumn(); measureScroll(); invalidate(); });
 addEventListener('scroll', () => { onScroll(); invalidate(); }, { passive: true });
 addEventListener('pointermove', onPointerMove, { passive: true });
 document.addEventListener('mouseleave', onPointerLeave);
@@ -61,8 +65,9 @@ document.addEventListener('visibilitychange', () => {
 darkQuery.addEventListener('change', invalidate);
 reducedQuery.addEventListener('change', () => { pause(); start(); });
 // Still mode: follow the sun once a minute, and step through a played day
+// (once a second with reduced motion; smoothly enough to watch without WebGL, where nothing else animates)
 setInterval(() => { if (!isRunning() && !document.hidden) invalidate(); }, 60000);
-setInterval(() => { if (state.play && !isRunning()) invalidate(); }, 1000);
+setInterval(() => { if (state.play && !isRunning()) invalidate(); }, program ? 1000 : 150);
 
 start();
 

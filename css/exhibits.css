@@ -46,7 +46,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 1280px;
+  width: calc(1280px + 24px); /* the extra 24px holds the page's own scrollbar, clipped by .preview */
   height: 800px;
   border: 0;
   background: #fff;

@@ -19,6 +19,7 @@ uniform vec2 uPointer;
 uniform vec2 uColumn;   // content column, x0..x1 in uv
 uniform vec4 uSpots[6]; // preview rects in uv (x0, y0, x1, y1)
 uniform float uSpotA[6];
+uniform float uSpotN;   // how many of uSpots are in use
 
 float hash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float noise(vec2 p) {
@@ -52,11 +53,14 @@ void main() {
   float hz = exp(-abs(uv.y - hY) * 5.);
   col = lit(col, uBodyCol, hz * .3 * (.35 + .65 * exp(-abs(p.x - body.x) * 1.2)) * uBody.z);
 
-  // Stars
-  vec2 sc = p * 140.;
-  float sh = hash(floor(sc));
-  float star = step(.993, sh) * smoothstep(.4, 0., length(fract(sc) - .5)) * (.55 + .45 * sin(uTime * 1.7 + sh * 60.));
-  col = lit(col, vec3(1.), star * uNight * (1. - uCloud) * (1. - uFog) * .85 * g);
+  // Stars. Each weather layer below is skipped when it is off: the test is the same for every pixel, so it is free
+  float starA = uNight * (1. - uCloud) * (1. - uFog);
+  if (starA > .001) {
+    vec2 sc = p * 140.;
+    float sh = hash(floor(sc));
+    float star = step(.993, sh) * smoothstep(.4, 0., length(fract(sc) - .5)) * (.55 + .45 * sin(uTime * 1.7 + sh * 60.));
+    col = lit(col, vec3(1.), star * starA * .85 * g);
+  }
 
   // The visitor pushes the air around
   vec2 d = p - ptr;
@@ -82,43 +86,54 @@ void main() {
   col = lit(col, uBodyCol, (.4 * exp(-bd * 3.) + .4 * exp(-bd * bd * 150.)) * uBody.z * (1. - .7 * uCloud) * (1. - .6 * uFog));
 
   // Fog: a soft wall rising from the horizon, and a veil over the rest
-  vec3 fogCol = uDark > .5 ? mix(uHorizon, vec3(.3, .33, .4), .55) : mix(uHorizon, vec3(.9, .91, .93), .6);
-  float fogBand = smoothstep(1.6, .1, uv.y - hY) * (.7 + .3 * fbm(q * .6 + uFlow * .004));
-  col = mix(col, fogCol, uFog * (.35 + .55 * fogBand));
+  if (uFog > .001) {
+    vec3 fogCol = uDark > .5 ? mix(uHorizon, vec3(.3, .33, .4), .55) : mix(uHorizon, vec3(.9, .91, .93), .6);
+    float fogBand = smoothstep(1.6, .1, uv.y - hY) * (.7 + .3 * fbm(q * .6 + uFlow * .004));
+    col = mix(col, fogCol, uFog * (.35 + .55 * fogBand));
+  }
 
   // Lightning: the clouds light up from inside, brightest near the strike
-  float strike = exp(-abs(uv.x - uFlash.y) * 3.);
-  col = lit(col, vec3(.85, .88, 1.), uFlash.x * (c * (.35 + .65 * strike) + .08));
+  if (uFlash.x > .001) {
+    float strike = exp(-abs(uv.x - uFlash.y) * 3.);
+    col = lit(col, vec3(.85, .88, 1.), uFlash.x * (c * (.35 + .65 * strike) + .08));
+  }
 
   // Rain
-  vec2 r = vec2(p.x * 70. + p.y * 12., p.y * 2.5 + uTime * 3.5);
-  float rh = hash(vec2(floor(r.x), 1.));
-  float drop = smoothstep(.88, 1., fract(r.y + rh * 7.)) * (1. - smoothstep(0., .1, abs(fract(r.x) - .5)));
-  col = lit(col, mix(uGlow, vec3(1.), .5), drop * clamp(uRain, 0., 1.) * .11);
+  if (uRain > .001) {
+    vec2 r = vec2(p.x * 70. + p.y * 12., p.y * 2.5 + uTime * 3.5);
+    float rh = hash(vec2(floor(r.x), 1.));
+    float drop = smoothstep(.88, 1., fract(r.y + rh * 7.)) * (1. - smoothstep(0., .1, abs(fract(r.x) - .5)));
+    col = lit(col, mix(uGlow, vec3(1.), .5), drop * clamp(uRain, 0., 1.) * .11);
+  }
 
   // Hail: short, bright, fast pellets
-  vec2 hr = vec2(p.x * 45. + p.y * 6., p.y * 1.6 + uTime * 6.);
-  float hh = hash(vec2(floor(hr.x), 5.));
-  float pellet = smoothstep(.95, 1., fract(hr.y + hh * 7.)) * (1. - smoothstep(0., .2, abs(fract(hr.x) - .5)));
-  col = lit(col, vec3(1.), pellet * uHail * .25);
+  if (uHail > .001) {
+    vec2 hr = vec2(p.x * 45. + p.y * 6., p.y * 1.6 + uTime * 6.);
+    float hh = hash(vec2(floor(hr.x), 5.));
+    float pellet = smoothstep(.95, 1., fract(hr.y + hh * 7.)) * (1. - smoothstep(0., .2, abs(fract(hr.x) - .5)));
+    col = lit(col, vec3(1.), pellet * uHail * .25);
+  }
 
   // Snow: three depths of flakes, falling slowly, wobbling, drifting with the wind
-  float snow = 0.;
-  for (int i = 0; i < 3; i++) {
-    float fi = float(i);
-    float sc = 16. + fi * 12.;
-    vec2 sp = vec2(p.x + uWind.x * uFlow * .012 * (1. - fi * .25), p.y + uTime * (.09 - fi * .02)) * sc;
-    vec2 cell = floor(sp);
-    float h = hash(cell + fi * 17.);
-    vec2 fp = fract(sp) - .5 + (vec2(hash(cell + 3.1), hash(cell + 7.7)) - .5) * .5;
-    fp.x += sin(uTime * (1. + h) + h * 40.) * .2;
-    float rad = mix(.06, .13, h) * (1. - fi * .2);
-    snow += step(1. - uSnow * .55, h) * smoothstep(rad, rad * .3, length(fp)) * (1. - fi * .25);
+  if (uSnow > .001) {
+    float snow = 0.;
+    for (int i = 0; i < 3; i++) {
+      float fi = float(i);
+      float sc = 16. + fi * 12.;
+      vec2 sp = vec2(p.x + uWind.x * uFlow * .012 * (1. - fi * .25), p.y + uTime * (.09 - fi * .02)) * sc;
+      vec2 cell = floor(sp);
+      float h = hash(cell + fi * 17.);
+      vec2 fp = fract(sp) - .5 + (vec2(hash(cell + 3.1), hash(cell + 7.7)) - .5) * .5;
+      fp.x += sin(uTime * (1. + h) + h * 40.) * .2;
+      float rad = mix(.06, .13, h) * (1. - fi * .2);
+      snow += step(1. - uSnow * .55, h) * smoothstep(rad, rad * .3, length(fp)) * (1. - fi * .25);
+    }
+    col = lit(col, vec3(1.), snow * (uDark > .5 ? .55 : 1.3));
   }
-  col = lit(col, vec3(1.), snow * (uDark > .5 ? .55 : 1.3));
 
   // Stage light on the work
   for (int i = 0; i < 6; i++) {
+    if (float(i) >= uSpotN) break;
     vec4 s = uSpots[i];
     vec2 c0 = vec2((s.x + s.z) * .5 * asp, (s.y + s.w) * .5);
     vec2 hs = vec2((s.z - s.x) * .5 * asp, (s.w - s.y) * .5);
@@ -173,7 +188,7 @@ if (gl) {
     gl.enableVertexAttribArray(a);
     gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
     for (const name of ['uRes', 'uTime', 'uFlow', 'uScroll', 'uDark', 'uReveal', 'uNight', 'uCloud', 'uRain', 'uPresence',
-      'uEnergy', 'uSnow', 'uHail', 'uFog', 'uStorm', 'uFlash', 'uColumn', 'uZenith', 'uHorizon', 'uBodyCol', 'uGlow', 'uBody', 'uWind', 'uPointer', 'uSpots', 'uSpotA']) {
+      'uEnergy', 'uSnow', 'uHail', 'uFog', 'uStorm', 'uFlash', 'uColumn', 'uZenith', 'uHorizon', 'uBodyCol', 'uGlow', 'uBody', 'uWind', 'uPointer', 'uSpots', 'uSpotA', 'uSpotN']) {
       U[name] = gl.getUniformLocation(program, name);
     }
     document.body.prepend(canvas);
@@ -183,8 +198,15 @@ if (gl) {
   }
 }
 
+// Fraction of device pixels drawn. Soft by nature: half resolution is plenty, and slow devices get less (see loop.js)
+let scale = 0.5;
+export function setScale(s) {
+  scale = s;
+  resize();
+}
+
 export function resize() {
-  const ratio = Math.min(devicePixelRatio || 1, 2) * 0.5; // soft by nature: half resolution is plenty
+  const ratio = Math.min(devicePixelRatio || 1, 2) * scale;
   canvas.width = Math.max(1, Math.round(innerWidth * ratio));
   canvas.height = Math.max(1, Math.round(innerHeight * ratio));
   if (program) gl.viewport(0, 0, canvas.width, canvas.height);

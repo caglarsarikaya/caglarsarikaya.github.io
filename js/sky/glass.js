@@ -15,15 +15,22 @@ const drops = [];
 const debt = { rain: 0, snow: 0, hail: 0 }; // fractional spawns carried between frames
 let mist = 0;
 let dirty = false;
+let maxRatio = 1.5; // drops are a few pixels wide: sharper than this only costs memory
+
+export function setGlassRatio(r) {
+  maxRatio = r;
+  resizeGlass();
+}
 
 export function resizeGlass() {
   if (!ctx) return;
-  const ratio = Math.min(devicePixelRatio || 1, 2);
+  const ratio = Math.min(devicePixelRatio || 1, maxRatio);
   W = innerWidth;
   H = innerHeight;
   canvas.width = Math.round(W * ratio);
   canvas.height = Math.round(H * ratio);
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  mistCache = null;
   dirty = true;
 }
 
@@ -84,17 +91,29 @@ function drawFlake(x, y, r, turn, a, dark) {
   }
 }
 
-// Faint condensation in the corners
+// Faint condensation in the corners. The gradients are built once per size and theme at full strength,
+// then drawn with globalAlpha.
+let mistCache = null;
 function drawMist(a, dark) {
-  const rgb = dark ? '190,200,225' : '255,255,255';
-  const R = Math.max(W, H) * 0.35;
-  for (const [cx, cy] of [[0, 0], [W, 0], [0, H], [W, H]]) {
-    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
-    g.addColorStop(0, `rgba(${rgb},${(dark ? 0.16 : 0.35) * a})`);
-    g.addColorStop(1, `rgba(${rgb},0)`);
-    ctx.fillStyle = g;
-    ctx.fillRect(cx ? cx - R : 0, cy ? cy - R : 0, R, R);
+  if (!mistCache || mistCache.dark !== dark) {
+    const rgb = dark ? '190,200,225' : '255,255,255';
+    const R = Math.max(W, H) * 0.35;
+    mistCache = {
+      dark,
+      corners: [[0, 0], [W, 0], [0, H], [W, H]].map(([cx, cy]) => {
+        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+        g.addColorStop(0, `rgba(${rgb},${dark ? 0.16 : 0.35})`);
+        g.addColorStop(1, `rgba(${rgb},0)`);
+        return [g, cx ? cx - R : 0, cy ? cy - R : 0, R];
+      })
+    };
   }
+  ctx.globalAlpha = a;
+  for (const [g, x, y, R] of mistCache.corners) {
+    ctx.fillStyle = g;
+    ctx.fillRect(x, y, R, R);
+  }
+  ctx.globalAlpha = 1;
 }
 
 export function clearGlass() {
