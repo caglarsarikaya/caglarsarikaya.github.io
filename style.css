@@ -11,8 +11,8 @@
   --surface: #ffffff;
   --surface-2: #efece4;
   --ink: #1d2127;
-  --muted: #6b6f76;
-  --line: #e4e0d6;
+  --muted: #5d6168;
+  --line: rgba(29, 33, 39, 0.11);
   --accent: #1f5f5b;
   --accent-soft: rgba(31, 95, 91, 0.08);
   --hint: #b08d57;
@@ -20,15 +20,8 @@
   --radius: 14px;
   --radius-sm: 8px;
 
-  /* Direction and length of shadows, set by ambient.js from the light on the wall */
-  --light-x: 0;
-  --light-y: 0.7;
-  --shadow:
-    calc(var(--light-x) * 1.5px) calc(var(--light-y) * 1.5px) 2px rgba(29, 33, 39, 0.04),
-    calc(var(--light-x) * 6px) calc(var(--light-y) * 6px) 18px rgba(29, 33, 39, 0.06);
-  --shadow-hover:
-    calc(var(--light-x) * 3px) calc(var(--light-y) * 3px) 4px rgba(29, 33, 39, 0.05),
-    calc(var(--light-x) * 22px) calc(var(--light-y) * 22px) 40px rgba(29, 33, 39, 0.12);
+  --shadow: 0 1px 2px rgba(29, 33, 39, 0.04), 0 4px 16px rgba(29, 33, 39, 0.06);
+  --shadow-hover: 0 2px 4px rgba(29, 33, 39, 0.05), 0 16px 40px rgba(29, 33, 39, 0.14);
 
   --max-width: 980px;
   --gutter: 1.5rem;
@@ -43,17 +36,13 @@
     --surface: #1a1d21;
     --surface-2: #22262b;
     --ink: #e8e6e1;
-    --muted: #9a9ea4;
-    --line: #2a2e34;
+    --muted: #b1b5bb;
+    --line: rgba(255, 255, 255, 0.1);
     --accent: #6fb3a8;
     --accent-soft: rgba(111, 179, 168, 0.1);
     --hint: #c9a46a;
-    --shadow:
-      calc(var(--light-x) * 1.5px) calc(var(--light-y) * 1.5px) 2px rgba(0, 0, 0, 0.3),
-      calc(var(--light-x) * 6px) calc(var(--light-y) * 6px) 18px rgba(0, 0, 0, 0.28);
-    --shadow-hover:
-      calc(var(--light-x) * 3px) calc(var(--light-y) * 3px) 4px rgba(0, 0, 0, 0.35),
-      calc(var(--light-x) * 22px) calc(var(--light-y) * 22px) 40px rgba(0, 0, 0, 0.45);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
+    --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 16px 40px rgba(0, 0, 0, 0.45);
     color-scheme: dark;
   }
 }
@@ -80,26 +69,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Window light (ambient.js): the wall behind the work, lit by the visitor's real sky.
-   The body stays transparent so these fixed layers sit between the page background and the content. */
+/* The stage (ambient.js): the visitor's real sky behind the work.
+   The body stays transparent so this fixed layer sits between the page background and the content. */
 .ambient {
   position: fixed;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.ambient-wall {
-  top: -48px;
-  left: -48px;
-  width: calc(100% + 96px);
-  height: calc(100% + 96px);
-}
-
-.ambient-dust {
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: -1;
+  pointer-events: none;
 }
 
 img {
@@ -219,6 +198,63 @@ strong {
   border-color: var(--accent);
   color: var(--accent);
   background: var(--accent-soft);
+}
+
+/* Names the sky behind the page; plays a day of it on click */
+.sky-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+  padding: 0.4rem 0.9rem 0.4rem 0.75rem;
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  line-height: 1.4;
+  text-align: left;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 45%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.9s ease, transform 0.9s ease, border-color 0.2s ease;
+}
+
+.sky-chip.is-shown {
+  opacity: 1;
+  transform: none;
+}
+
+.sky-chip:hover {
+  border-color: var(--sky-sun, var(--accent));
+}
+
+.sky-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--sky-sun, var(--hint));
+  animation: sky-pulse 2.4s ease-out infinite;
+}
+
+@keyframes sky-pulse {
+  from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--sky-sun, var(--hint)) 70%, transparent); }
+  to { box-shadow: 0 0 0 0.65rem transparent; }
+}
+
+.sky-play {
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.sky-chip:hover .sky-play,
+.sky-chip.is-playing .sky-play {
+  color: var(--sky-sun, var(--accent));
 }
 
 /* Room index: a floor plan of the sections below */
@@ -822,6 +858,9 @@ h2 {
 /* ---------- Footer ---------- */
 footer {
   border-top: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .footer-content {

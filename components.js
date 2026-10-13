@@ -158,7 +158,6 @@ class SiteFooter extends HTMLElement {
         <div class="footer-content">
           <span>&copy; ${new Date().getFullYear()} Çağlar Can Sarıkaya</span>
           <span data-feeds-updated></span>
-          <span data-ambient-label></span>
           <a href="#top" onclick="window.scrollTo({ top: 0 }); return false;">Back to top &uarr;</a>
         </div>
       </footer>
