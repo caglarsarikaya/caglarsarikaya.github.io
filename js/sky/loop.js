@@ -3,11 +3,12 @@
 import { load, save } from '../lib/storage.js';
 import { RAD, clamp, smooth } from './math.js';
 import { state, weather, target, darkQuery, reducedQuery, root } from './state.js';
-import { now, speed, LAPSE_MS } from './clock.js';
+import { now, speed, PLAY, playElapsed } from './clock.js';
+import { tourWeather } from './year.js';
 import { sky } from './palette.js';
 import { canvas, gl, program, U } from './shader.js';
 import { column, spots } from './layout.js';
-import { pointer, ripple, scroll } from './visitor.js';
+import { pointer, scroll } from './visitor.js';
 import { chip, writeChip, setPlaying } from './chip.js';
 import { updateGlass, clearGlass } from './glass.js';
 
@@ -23,7 +24,9 @@ function lightning(tNow, still, dark) {
     nextFlash = 0;
     return 0;
   }
-  if (!nextFlash) nextFlash = tNow + 2000 + Math.random() * 5000;
+  // A storm on the weather tour lasts only a stop, so its first flash comes soon
+  const first = state.play?.kind === 'year' ? 400 + Math.random() * 800 : 2000 + Math.random() * 5000;
+  if (!nextFlash) nextFlash = Math.max(tNow + first, flashAt + 6000);
   if (tNow >= nextFlash) {
     flashAt = tNow;
     flashX = 0.15 + Math.random() * 0.7;
@@ -54,19 +57,21 @@ function render() {
   const still = reducedQuery.matches;
   const dark = darkQuery.matches;
 
-  if (state.lapse && tNow - state.lapse >= LAPSE_MS) {
-    state.lapse = 0;
-    setPlaying(false);
+  if (state.play && tNow - state.play.start >= PLAY[state.play.kind].ms) {
+    state.play = null;
+    setPlaying(null);
     lastChip = -Infinity;
   }
 
   const date = now();
   const s = sky(date, dark);
 
+  // While a year plays, the weather follows the tour; the live target is left alone and returns after
+  const goal = state.play?.kind === 'year' ? tourWeather(playElapsed()) : target;
   const ease = still ? 1 : 1 - Math.pow(0.97, dt / 16);
-  for (const k of EASED) weather[k] += (target[k] - weather[k]) * ease;
-  weather.dir = target.dir;
-  weather.code = target.code;
+  for (const k of EASED) weather[k] += (goal[k] - weather[k]) * ease;
+  weather.dir = goal.dir;
+  weather.code = goal.code;
 
   // Visitor easing
   const follow = still ? 1 : Math.min(1, dt / 160);
@@ -115,7 +120,6 @@ function render() {
     gl.uniform2f(U.uWind, Math.sin(windRad) * facing, Math.cos(windRad) * 0.3);
     gl.uniform2f(U.uPointer, pointer.sx, pointer.sy);
     gl.uniform2f(U.uColumn, column[0], column[1]);
-    gl.uniform3f(U.uRipple, ripple.x, ripple.y, still ? 99 : (tNow - ripple.start) / 1000);
     const [rects, alphas] = spots(still ? 1e4 : dt);
     gl.uniform4fv(U.uSpots, rects);
     gl.uniform1fv(U.uSpotA, alphas);
@@ -129,9 +133,9 @@ function render() {
   if (still) clearGlass();
   else updateGlass(dt, weather, column, dark, Math.sin(windRad) * facing * Math.min(weather.wind / 40, 1));
 
-  if (tNow - lastChip >(state.lapse || speed !== 1 ? 120 : 10000)) {
+  if (tNow - lastChip >(state.play || speed !== 1 ? 120 : 10000)) {
     lastChip = tNow;
-    writeChip(date, s);
+    writeChip(date, s, goal);
   }
   if (chip && chip.hidden && reveal > 0.35) {
     chip.hidden = false;

@@ -66,12 +66,13 @@ export function overrides() {
   return forced;
 }
 
-// Chip words, e.g. ['heavy snow', 'windy']
+// Chip words, e.g. ['heavy snow', 'windy']. A storm is just "thunderstorm": its hail and wind go
+// without saying, and the chip stays on one line.
 export function describe(t) {
   const words = [];
   const amount = (v, light, plain, heavy) => (v > 0.75 ? heavy : v < 0.4 ? light : plain);
-  if (t.storm > 0.5) words.push(t.hail > 0.5 ? 'thunderstorm with hail' : 'thunderstorm');
-  else if (t.hail > 0.5) words.push('hail');
+  if (t.storm > 0.5) return ['thunderstorm'];
+  if (t.hail > 0.5) words.push('hail');
   else if (FREEZING.has(t.code)) words.push(DRIZZLE.has(t.code) ? 'freezing drizzle' : 'freezing rain');
   else if (t.snow > 0.05 && t.rain > 0.05) words.push('sleet');
   else if (t.snow > 0.05) words.push(amount(t.snow, 'light snow', 'snow', 'heavy snow'));

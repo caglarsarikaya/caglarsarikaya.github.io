@@ -1,20 +1,21 @@
 // chip.js
-// The chip in the intro names the sky ("Your sky now · Istanbul · 17:20 · golden hour") and plays a day on click
+// The chip in the intro names the sky ("Istanbul · 17:20 · golden hour · clear") and plays a day or a year of it
 import { phaseName } from './astronomy.js';
 import { describe } from './conditions.js';
-import { state, target, zone, root } from './state.js';
+import { state, zone, root } from './state.js';
 
 export const chip = document.querySelector('[data-sky-chip]');
 const chipLabel = chip?.querySelector('[data-sky-label]');
 
-function clock(date) {
-  const opts = { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' };
+function format(date, opts) {
   try {
     return new Intl.DateTimeFormat('en-GB', { ...opts, timeZone: zone }).format(date);
   } catch {
     return new Intl.DateTimeFormat('en-GB', opts).format(date);
   }
 }
+
+const clock = date => format(date, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 
 function hourWord(s, time) {
   const elev = s.sun.elevation;
@@ -29,17 +30,29 @@ function hourWord(s, time) {
   return h < 11 ? 'morning sun' : h < 15 ? 'midday sun' : 'afternoon sun';
 }
 
-export function writeChip(date, s) {
+// goal: the weather being shown (the tour's stop while a year plays, else the live weather)
+export function writeChip(date, s, goal) {
   if (!chipLabel) return;
+  const { place } = state;
   const time = clock(date);
-  const parts = [state.lapse ? 'A day of your sky' : 'Your sky now', state.place.label, time, hourWord(s, time)];
-  if (state.weatherKnown && !state.lapse) parts.push(...describe(target));
+  const parts = [place.label, time, hourWord(s, time)];
+  if (state.weatherKnown || state.play?.kind === 'year') parts.push(...describe(goal));
   const text = parts.join(' · ');
   if (chipLabel.textContent !== text) chipLabel.textContent = text;
   root.style.setProperty('--sky-sun', `rgb(${s.bodyColor.map(v => Math.round(v * 255)).join(',')})`);
 }
 
-export function setPlaying(playing) {
-  chip?.classList.toggle('is-playing', playing);
-  chip?.setAttribute('aria-pressed', String(playing));
+// kind: 'day', 'year' or null. The playing button reads "Playing now" until it ends;
+// each button keeps the width of its own label, so swapping the text moves nothing.
+export function setPlaying(kind) {
+  chip?.classList.toggle('is-playing', Boolean(kind));
+  chip?.querySelectorAll('[data-sky-play]').forEach(b => {
+    if (!b.dataset.label) {
+      b.dataset.label = b.textContent;
+      b.style.minWidth = `${b.getBoundingClientRect().width}px`;
+    }
+    const playing = b.dataset.skyPlay === kind;
+    b.setAttribute('aria-pressed', String(playing));
+    b.textContent = playing ? 'Playing now' : b.dataset.label;
+  });
 }

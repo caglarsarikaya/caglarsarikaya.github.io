@@ -17,7 +17,6 @@ uniform vec3 uBody;     // screen x, screen y, strength
 uniform vec2 uWind;     // drift direction
 uniform vec2 uPointer;
 uniform vec2 uColumn;   // content column, x0..x1 in uv
-uniform vec3 uRipple;   // x, y, age in seconds
 uniform vec4 uSpots[6]; // preview rects in uv (x0, y0, x1, y1)
 uniform float uSpotA[6];
 
@@ -59,14 +58,10 @@ void main() {
   float star = step(.993, sh) * smoothstep(.4, 0., length(fract(sc) - .5)) * (.55 + .45 * sin(uTime * 1.7 + sh * 60.));
   col = lit(col, vec3(1.), star * uNight * (1. - uCloud) * (1. - uFog) * .85 * g);
 
-  // Visitor and ripple push the air around
+  // The visitor pushes the air around
   vec2 d = p - ptr;
   float pd = length(d);
   vec2 push = d / (pd + 1e-4) * exp(-pd * pd * 16.) * .25 * uPresence;
-  vec2 rp = vec2(uRipple.x * asp, uRipple.y);
-  float rd = length(p - rp);
-  float ring = exp(-pow((rd - uRipple.z * .55) * 9., 2.)) * exp(-uRipple.z * .9);
-  push += (p - rp) / (rd + 1e-4) * ring * .1;
 
   // Clouds: cover from the real cloud cover, drift from the real wind
   vec2 q = p * 1.35 + push - uWind * uFlow * .02;
@@ -132,9 +127,8 @@ void main() {
     col = lit(col, mix(uGlow, uHorizon, .3), exp(-sd * 9.) * .4 * above * uSpotA[i]);
   }
 
-  // The visitor's light and the ripple
+  // The visitor's light
   col = lit(col, uGlow, exp(-pd * pd * 28.) * .14 * uPresence * (1. + uEnergy));
-  col = lit(col, uGlow, ring * .2);
 
   // Keep text readable: compress highlights inside the content column on dark; margins and the top band keep their glow
   if (uDark > .5) {
@@ -179,7 +173,7 @@ if (gl) {
     gl.enableVertexAttribArray(a);
     gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
     for (const name of ['uRes', 'uTime', 'uFlow', 'uScroll', 'uDark', 'uReveal', 'uNight', 'uCloud', 'uRain', 'uPresence',
-      'uEnergy', 'uSnow', 'uHail', 'uFog', 'uStorm', 'uFlash', 'uColumn', 'uZenith', 'uHorizon', 'uBodyCol', 'uGlow', 'uBody', 'uWind', 'uPointer', 'uRipple', 'uSpots', 'uSpotA']) {
+      'uEnergy', 'uSnow', 'uHail', 'uFog', 'uStorm', 'uFlash', 'uColumn', 'uZenith', 'uHorizon', 'uBodyCol', 'uGlow', 'uBody', 'uWind', 'uPointer', 'uSpots', 'uSpotA']) {
       U[name] = gl.getUniformLocation(program, name);
     }
     document.body.prepend(canvas);

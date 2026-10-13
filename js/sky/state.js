@@ -24,7 +24,7 @@ export const target = { ...weather };
 
 export const state = {
   place: locate(zone),
-  lapse: 0, // performance.now() when "play a day" started, 0 when not playing
+  play: null, // { kind: 'day' | 'year', start: performance.now() } while a play runs
   weatherKnown: false
 };
 
