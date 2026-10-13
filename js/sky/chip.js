@@ -1,6 +1,7 @@
 // chip.js
 // The chip in the intro names the sky ("Your sky now · Istanbul · 17:20 · golden hour") and plays a day on click
 import { phaseName } from './astronomy.js';
+import { describe } from './conditions.js';
 import { state, target, zone, root } from './state.js';
 
 export const chip = document.querySelector('[data-sky-chip]');
@@ -32,11 +33,7 @@ export function writeChip(date, s) {
   if (!chipLabel) return;
   const time = clock(date);
   const parts = [state.lapse ? 'A day of your sky' : 'Your sky now', state.place.label, time, hourWord(s, time)];
-  if (state.weatherKnown && !state.lapse) {
-    const c = target.cloud;
-    parts.push(target.rain > 0.1 ? 'rain' : c < 15 ? 'clear' : c < 45 ? 'light cloud' : c < 80 ? 'cloudy' : 'overcast');
-    if (target.wind > 25) parts.push('windy');
-  }
+  if (state.weatherKnown && !state.lapse) parts.push(...describe(target));
   const text = parts.join(' · ');
   if (chipLabel.textContent !== text) chipLabel.textContent = text;
   root.style.setProperty('--sky-sun', `rgb(${s.bodyColor.map(v => Math.round(v * 255)).join(',')})`);

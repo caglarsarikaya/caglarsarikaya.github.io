@@ -17,14 +17,15 @@ try {
 }
 export const zone = tz;
 
-// weather eases toward target, which is set from Open-Meteo or the ?cloud / ?wind / ?rain overrides
-export const weather = { cloud: num('cloud') ?? 0, wind: num('wind') ?? 8, dir: 250, rain: num('rain') ?? 0 };
+// weather eases toward target, which is set from Open-Meteo and the dev overrides (see conditions.js).
+// cloud 0..100 %, wind and gust in km/h, dir in degrees, the rest 0..1
+export const weather = { cloud: 0, wind: 8, gust: 0, dir: 250, rain: 0, snow: 0, hail: 0, fog: 0, storm: 0, code: -1 };
 export const target = { ...weather };
 
 export const state = {
   place: locate(zone),
   lapse: 0, // performance.now() when "play a day" started, 0 when not playing
-  weatherKnown: ['cloud', 'wind', 'rain'].some(k => num(k) !== null)
+  weatherKnown: false
 };
 
 export const darkQuery = matchMedia('(prefers-color-scheme: dark)');

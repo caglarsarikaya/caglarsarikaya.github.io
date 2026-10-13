@@ -9,6 +9,32 @@ import { canvas, gl, program, U } from './shader.js';
 import { column, spots } from './layout.js';
 import { pointer, ripple, scroll } from './visitor.js';
 import { chip, writeChip, setPlaying } from './chip.js';
+import { updateGlass, clearGlass } from './glass.js';
+
+const EASED = ['cloud', 'wind', 'gust', 'rain', 'snow', 'hail', 'fog', 'storm'];
+
+// Lightning during a storm: a flicker, then the main glow, at most once every 6 s and gentle at its peak
+// (far below the 3-flashes-a-second photosensitivity threshold). None with reduced motion.
+let nextFlash = 0;
+let flashAt = -1e9;
+let flashX = 0.5;
+function lightning(tNow, still, dark) {
+  if (still || weather.storm < 0.5) {
+    nextFlash = 0;
+    return 0;
+  }
+  if (!nextFlash) nextFlash = tNow + 2000 + Math.random() * 5000;
+  if (tNow >= nextFlash) {
+    flashAt = tNow;
+    flashX = 0.15 + Math.random() * 0.7;
+    nextFlash = tNow + 6000 + Math.random() * 12000;
+  }
+  const k = tNow - flashAt;
+  if (k > 900) return 0;
+  const flicker = k < 60 ? k / 60 : Math.exp(-(k - 60) / 70);
+  const glow = k < 180 ? 0 : k < 240 ? (k - 180) / 60 : Math.exp(-(k - 240) / 200);
+  return Math.max(flicker * 0.6, glow) * (dark ? 0.6 : 0.35) * weather.storm;
+}
 
 let revealStart = performance.now();
 const revealed = load('session', 'sky-revealed') === '1';
@@ -38,8 +64,9 @@ function render() {
   const s = sky(date, dark);
 
   const ease = still ? 1 : 1 - Math.pow(0.97, dt / 16);
-  for (const k of ['cloud', 'wind', 'rain']) weather[k] += (target[k] - weather[k]) * ease;
+  for (const k of EASED) weather[k] += (target[k] - weather[k]) * ease;
   weather.dir = target.dir;
+  weather.code = target.code;
 
   // Visitor easing
   const follow = still ? 1 : Math.min(1, dt / 160);
@@ -49,7 +76,9 @@ function render() {
   pointer.presence += (present - pointer.presence) * Math.min(1, dt / 500);
   pointer.energy *= Math.pow(0.9, dt / 16);
   scroll.energy *= Math.pow(0.92, dt / 16);
-  if (!still) flow += (dt / 1000) * (0.35 + Math.min(weather.wind, 60) / 18) * (1 + scroll.energy * 2 + pointer.energy);
+  // Gusty wind moves the clouds in bursts
+  const gusty = clamp((weather.gust - weather.wind) / 40, 0, 1) * (0.5 + 0.5 * Math.sin(tNow / 1300));
+  if (!still) flow += (dt / 1000) * (0.35 + Math.min(weather.wind, 60) / 18) * (1 + gusty) * (1 + scroll.energy * 2 + pointer.energy);
 
   // Where the sun or moon sits on screen: east on the left in the north (facing south), mirrored in the south
   const facing = state.place.lat >= 0 ? -1 : 1;
@@ -70,7 +99,12 @@ function render() {
     gl.uniform1f(U.uReveal, 0.15 + 0.85 * reveal);
     gl.uniform1f(U.uNight, s.night);
     gl.uniform1f(U.uCloud, clamp(weather.cloud / 100, 0, 1));
-    gl.uniform1f(U.uRain, clamp(weather.rain / 1.5, 0, 1));
+    gl.uniform1f(U.uRain, clamp(weather.rain, 0, 1));
+    gl.uniform1f(U.uSnow, clamp(weather.snow, 0, 1));
+    gl.uniform1f(U.uHail, clamp(weather.hail, 0, 1));
+    gl.uniform1f(U.uFog, clamp(weather.fog, 0, 1));
+    gl.uniform1f(U.uStorm, clamp(weather.storm, 0, 1));
+    gl.uniform2f(U.uFlash, lightning(tNow, still, dark), flashX);
     gl.uniform1f(U.uPresence, pointer.presence);
     gl.uniform1f(U.uEnergy, Math.min(pointer.energy, 2));
     gl.uniform3fv(U.uZenith, s.zenith);
@@ -92,7 +126,10 @@ function render() {
     root.style.background = `linear-gradient(to bottom, ${css(s.zenith)}, ${css(s.horizon)}) fixed`;
   }
 
-  if (tNow - lastChip > (state.lapse || speed !== 1 ? 120 : 10000)) {
+  if (still) clearGlass();
+  else updateGlass(dt, weather, column, dark, Math.sin(windRad) * facing * Math.min(weather.wind / 40, 1));
+
+  if (tNow - lastChip >(state.lapse || speed !== 1 ? 120 : 10000)) {
     lastChip = tNow;
     writeChip(date, s);
   }

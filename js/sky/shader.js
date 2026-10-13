@@ -10,6 +10,8 @@ precision mediump float;
 #endif
 uniform vec2 uRes;
 uniform float uTime, uFlow, uScroll, uDark, uReveal, uNight, uCloud, uRain, uPresence, uEnergy;
+uniform float uSnow, uHail, uFog, uStorm;
+uniform vec2 uFlash;    // lightning: strength, strike x in uv
 uniform vec3 uZenith, uHorizon, uBodyCol, uGlow;
 uniform vec3 uBody;     // screen x, screen y, strength
 uniform vec2 uWind;     // drift direction
@@ -55,7 +57,7 @@ void main() {
   vec2 sc = p * 140.;
   float sh = hash(floor(sc));
   float star = step(.993, sh) * smoothstep(.4, 0., length(fract(sc) - .5)) * (.55 + .45 * sin(uTime * 1.7 + sh * 60.));
-  col = lit(col, vec3(1.), star * uNight * (1. - uCloud) * .85 * g);
+  col = lit(col, vec3(1.), star * uNight * (1. - uCloud) * (1. - uFog) * .85 * g);
 
   // Visitor and ripple push the air around
   vec2 d = p - ptr;
@@ -77,17 +79,48 @@ void main() {
   vec3 cloud = uDark > .5
     ? mix(col * 1.35 + vec3(.012, .016, .03), uGlow * .5, .12 + .4 * nearBody)
     : mix(col * .9, uGlow, .1 + .3 * nearBody);
+  cloud *= 1. - .3 * uStorm * (1. - f * .5); // storm clouds are heavy and dark
   col = mix(col, cloud, c * .85);
 
-  // Sun or moon, dimmed behind cloud
+  // Sun or moon, dimmed behind cloud and fog
   float bd = length(p - body);
-  col = lit(col, uBodyCol, (.4 * exp(-bd * 3.) + .4 * exp(-bd * bd * 150.)) * uBody.z * (1. - .7 * uCloud));
+  col = lit(col, uBodyCol, (.4 * exp(-bd * 3.) + .4 * exp(-bd * bd * 150.)) * uBody.z * (1. - .7 * uCloud) * (1. - .6 * uFog));
+
+  // Fog: a soft wall rising from the horizon, and a veil over the rest
+  vec3 fogCol = uDark > .5 ? mix(uHorizon, vec3(.3, .33, .4), .55) : mix(uHorizon, vec3(.9, .91, .93), .6);
+  float fogBand = smoothstep(1.6, .1, uv.y - hY) * (.7 + .3 * fbm(q * .6 + uFlow * .004));
+  col = mix(col, fogCol, uFog * (.35 + .55 * fogBand));
+
+  // Lightning: the clouds light up from inside, brightest near the strike
+  float strike = exp(-abs(uv.x - uFlash.y) * 3.);
+  col = lit(col, vec3(.85, .88, 1.), uFlash.x * (c * (.35 + .65 * strike) + .08));
 
   // Rain
   vec2 r = vec2(p.x * 70. + p.y * 12., p.y * 2.5 + uTime * 3.5);
   float rh = hash(vec2(floor(r.x), 1.));
   float drop = smoothstep(.88, 1., fract(r.y + rh * 7.)) * (1. - smoothstep(0., .1, abs(fract(r.x) - .5)));
-  col = lit(col, mix(uGlow, vec3(1.), .5), drop * clamp(uRain, 0., 1.) * .09);
+  col = lit(col, mix(uGlow, vec3(1.), .5), drop * clamp(uRain, 0., 1.) * .11);
+
+  // Hail: short, bright, fast pellets
+  vec2 hr = vec2(p.x * 45. + p.y * 6., p.y * 1.6 + uTime * 6.);
+  float hh = hash(vec2(floor(hr.x), 5.));
+  float pellet = smoothstep(.95, 1., fract(hr.y + hh * 7.)) * (1. - smoothstep(0., .2, abs(fract(hr.x) - .5)));
+  col = lit(col, vec3(1.), pellet * uHail * .25);
+
+  // Snow: three depths of flakes, falling slowly, wobbling, drifting with the wind
+  float snow = 0.;
+  for (int i = 0; i < 3; i++) {
+    float fi = float(i);
+    float sc = 16. + fi * 12.;
+    vec2 sp = vec2(p.x + uWind.x * uFlow * .012 * (1. - fi * .25), p.y + uTime * (.09 - fi * .02)) * sc;
+    vec2 cell = floor(sp);
+    float h = hash(cell + fi * 17.);
+    vec2 fp = fract(sp) - .5 + (vec2(hash(cell + 3.1), hash(cell + 7.7)) - .5) * .5;
+    fp.x += sin(uTime * (1. + h) + h * 40.) * .2;
+    float rad = mix(.06, .13, h) * (1. - fi * .2);
+    snow += step(1. - uSnow * .55, h) * smoothstep(rad, rad * .3, length(fp)) * (1. - fi * .25);
+  }
+  col = lit(col, vec3(1.), snow * (uDark > .5 ? .55 : 1.3));
 
   // Stage light on the work
   for (int i = 0; i < 6; i++) {
@@ -146,7 +179,7 @@ if (gl) {
     gl.enableVertexAttribArray(a);
     gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
     for (const name of ['uRes', 'uTime', 'uFlow', 'uScroll', 'uDark', 'uReveal', 'uNight', 'uCloud', 'uRain', 'uPresence',
-      'uEnergy', 'uColumn', 'uZenith', 'uHorizon', 'uBodyCol', 'uGlow', 'uBody', 'uWind', 'uPointer', 'uRipple', 'uSpots', 'uSpotA']) {
+      'uEnergy', 'uSnow', 'uHail', 'uFog', 'uStorm', 'uFlash', 'uColumn', 'uZenith', 'uHorizon', 'uBodyCol', 'uGlow', 'uBody', 'uWind', 'uPointer', 'uRipple', 'uSpots', 'uSpotA']) {
       U[name] = gl.getUniformLocation(program, name);
     }
     document.body.prepend(canvas);
