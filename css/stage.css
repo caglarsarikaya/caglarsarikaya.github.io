@@ -1,0 +1,11 @@
+/* The stage (js/sky/): the visitor's real sky behind the work.
+   The body stays transparent so this fixed layer sits between the page background and the content. */
+.ambient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}

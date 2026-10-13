@@ -46,7 +46,7 @@
         "name": "Çağlar Can Sarıkaya",
         "url": "https://caglarsarikaya.github.io/",
         "jobTitle": "Senior Software Engineer",
-        "image": "https://caglarsarikaya.github.io/assets/images/logo.png",
+        "image": "https://caglarsarikaya.github.io/assets/logo/logo.png",
         "description": "Senior full-stack engineer (C#/.NET, React) with 6 years building high-traffic web platforms, e-commerce systems and third-party integrations. Builds LLM-based tools in Python.",
         "address": {
           "@type": "PostalAddress",
@@ -94,12 +94,18 @@
   }
   </script>
   
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css">
-  <script src="components.js"></script>
-  <script src="ambient.js" defer></script>
+  <link rel="icon" type="image/svg+xml" href="assets/logo/logo.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/logo/favicon.png">
+  <link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/stage.css">
+  <link rel="stylesheet" href="css/intro.css">
+  <link rel="stylesheet" href="css/rooms.css">
+  <link rel="stylesheet" href="css/exhibits.css">
+  <link rel="stylesheet" href="css/feeds.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <script src="js/head.js"></script>
+  <script type="module" src="js/main.js"></script>
 </head>
 
 <body class="home">
@@ -134,7 +140,7 @@
     <header class="intro">
       <div class="intro-main">
         <div class="intro-top">
-          <img class="intro-mark" src="assets/images/logo.svg" alt="" width="40" height="40">
+          <img class="intro-mark" src="assets/logo/logo.svg" alt="" width="40" height="40">
           <p class="eyebrow"><span class="room-num"></span>Portfolio</p>
         </div>
         <h1>Çağlar Can Sarıkaya</h1>
@@ -149,12 +155,12 @@
           <a href="https://linkedin.com/in/caglarcansarikaya" target="_blank" rel="noopener" aria-label="LinkedIn"><svg><use href="#i-linkedin"/></svg><span>LinkedIn</span></a>
           <a href="mailto:caglarcansarikaya@gmail.com" aria-label="Email"><svg><use href="#i-mail"/></svg><span>Email</span></a>
         </nav>
-        <!-- Filled by ambient.js: the visitor's sky behind the page -->
+        <!-- Filled by js/sky/: the visitor's sky behind the page -->
         <button class="sky-chip" type="button" data-sky-chip aria-pressed="false" title="Play a day of this sky" hidden>
           <span class="sky-dot"></span><span data-sky-label></span><span class="sky-play">&#9654; Play a day</span>
         </button>
       </div>
-      <!-- Room index: filled from the sections below by components.js -->
+      <!-- Room index: filled from the sections below by js/site/room-index.js -->
       <nav class="room-index" aria-label="Sections">
         <ol data-room-index></ol>
       </nav>
