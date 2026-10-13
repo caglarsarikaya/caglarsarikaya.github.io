@@ -1,0 +1,251 @@
+/* ---------- Intro ---------- */
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 19rem;
+  align-items: end;
+  gap: 2rem 3rem;
+  padding: 4.5rem 0 1rem;
+}
+
+.intro-top {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.intro-top .eyebrow {
+  margin-bottom: 0;
+}
+
+.intro-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px var(--line), var(--shadow);
+}
+
+.intro h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+
+.intro-lead {
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  line-height: 1.6;
+  max-width: 38rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.intro-lead strong {
+  color: var(--ink);
+}
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: var(--surface);
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.social a:hover {
+  text-decoration: none;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Names the sky behind the page; plays a day of it on click */
+.sky-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+  padding: 0.4rem 0.9rem 0.4rem 0.75rem;
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  line-height: 1.4;
+  text-align: left;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 45%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.9s ease, transform 0.9s ease, border-color 0.2s ease;
+}
+
+.sky-chip.is-shown {
+  opacity: 1;
+  transform: none;
+}
+
+.sky-chip:hover {
+  border-color: var(--sky-sun, var(--accent));
+}
+
+.sky-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--sky-sun, var(--hint));
+  animation: sky-pulse 2.4s ease-out infinite;
+}
+
+@keyframes sky-pulse {
+  from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--sky-sun, var(--hint)) 70%, transparent); }
+  to { box-shadow: 0 0 0 0.65rem transparent; }
+}
+
+.sky-play {
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.sky-chip:hover .sky-play,
+.sky-chip.is-playing .sky-play {
+  color: var(--sky-sun, var(--accent));
+}
+
+/* Room index: a floor plan of the sections below */
+.room-index ol {
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.room-index a {
+  display: grid;
+  grid-template-columns: 2rem 1fr auto;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.room-index li:last-child a {
+  border-bottom: 0;
+}
+
+.room-index a:hover {
+  text-decoration: none;
+}
+
+.room-index .post-num {
+  font-size: 0.95rem;
+}
+
+.room-index-title {
+  font-size: 0.97rem;
+  transition: color 0.2s ease;
+}
+
+/* The ↗ arrow turned to ↘: these links jump down the page */
+.room-index svg {
+  color: var(--muted);
+  transform: rotate(90deg);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.room-index a:hover .room-index-title,
+.room-index a:hover svg {
+  color: var(--accent);
+}
+
+.room-index a:hover svg {
+  transform: translate(2px, 2px) rotate(90deg);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 859px) {
+  .intro {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 639px) {
+  .intro {
+    padding: 3rem 0 0.5rem;
+  }
+
+  .intro-top {
+    margin-bottom: 1.25rem;
+  }
+
+  .intro-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Room index as a row of compact chips */
+  .room-index ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    border-top: 0;
+  }
+
+  .room-index a {
+    display: inline-flex;
+    gap: 0.4rem;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+  }
+
+  .room-index li:last-child a {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .room-index .post-num {
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 0.72rem;
+  }
+
+  .room-index-title {
+    font-size: 0.75rem;
+  }
+
+  .room-index svg {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .social a span {
+    display: none;
+  }
+
+  .social a {
+    padding: 0.6rem;
+  }
+
+  .social svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+}
