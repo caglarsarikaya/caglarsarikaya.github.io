@@ -1,6 +1,17 @@
 # caglarsarikaya.github.io
 
-Personal portfolio site — static HTML/CSS/JS, deployed on GitHub Pages.
+This is Çağlar's personal website
+
+## What is it?
+
+It's a one-page portfolio. As you scroll down, you'll find:
+- the games and experiments Çağlar has built
+- real projects that are live and in use
+- Çağlar's blog posts, code and videos
+
+To feel real and interactive, the page reacts to where you are and the sky you have right now: sun or moon, clouds, rain. It also responds to your mouse, clicks and scrolling.
+
+Your location comes from your time zone and internet connection. The page never asks for it.
 
 
 ## Local Development
@@ -21,11 +32,4 @@ Serve the folder (`npx serve .`) and open the printed localhost URL. Opening `in
 - `scripts/fetch-feeds.mjs`: the build-time feed fetcher, with one module per source in `scripts/feeds/`.
 
 
-## Content
 
-- **Real projects**: static cards in `index.html` (`#projects`).
-- **Fun projects**: static tiles in `index.html` (`#fun`). To add one, copy an `<article class="exhibit">` block and change the URLs, name, initial and description. The live preview is picked up automatically.
-- **Medium / YouTube / GitHub**: fetched by `scripts/fetch-feeds.mjs` into `data/feeds.json` (latest + popular lists).
-
-The deploy workflow refreshes everything on push, daily at 06:00 UTC, and on manual "Run workflow".
-To preview locally, serve the folder (`npx serve .`) instead of opening the file, so `data/feeds.json` can load.
