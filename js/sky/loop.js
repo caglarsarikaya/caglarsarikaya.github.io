@@ -1,16 +1,17 @@
 // loop.js
-// Draws the sky each frame while animating, or once on demand in still mode (reduced motion, hidden tab)
+// Draws the sky about 30 times a second while animating, or once on demand in still mode (reduced motion,
+// hidden tab, no WebGL). Slow devices step down to fewer pixels and frames.
 import { load, save } from '../lib/storage.js';
 import { RAD, clamp, smooth } from './math.js';
 import { state, weather, target, darkQuery, reducedQuery, root } from './state.js';
 import { now, speed, PLAY, playElapsed } from './clock.js';
 import { tourWeather } from './year.js';
 import { sky } from './palette.js';
-import { canvas, gl, program, U } from './shader.js';
-import { column, spots } from './layout.js';
+import { canvas, gl, program, U, setScale } from './shader.js';
+import { column, spots, scrollRange } from './layout.js';
 import { pointer, scroll } from './visitor.js';
 import { chip, writeChip, setPlaying } from './chip.js';
-import { updateGlass, clearGlass } from './glass.js';
+import { updateGlass, clearGlass, setGlassRatio } from './glass.js';
 
 const EASED = ['cloud', 'wind', 'gust', 'rain', 'snow', 'hail', 'fog', 'storm'];
 
@@ -42,13 +43,41 @@ function lightning(tNow, still, dark) {
 let revealStart = performance.now();
 const revealed = load('session', 'sky-revealed') === '1';
 save('session', 'sky-revealed', '1');
-if (revealed || reducedQuery.matches) revealStart = -1e9;
+if (revealed || reducedQuery.matches || !program) revealStart = -1e9;
 
 let flow = 0;
 let last = performance.now();
 let lastChip = -Infinity;
 let running = false;
 let pending = false;
+let lastBackground = '';
+
+// Quality: the sky is soft and slow, so fewer pixels and frames look the same. Start one step down on
+// devices that say they are weak; step down further while frames come too slowly (never back up).
+const QUALITY = [
+  { scale: 0.5, fps: 30, glass: 1.5 },
+  { scale: 0.35, fps: 30, glass: 1 },
+  { scale: 0.25, fps: 24, glass: 1 }
+];
+const weak = navigator.connection?.saveData || navigator.deviceMemory <= 2 || navigator.hardwareConcurrency <= 2;
+let tier = 0;
+let slowSum = 0, slowN = 0;
+function setTier(t) {
+  tier = t;
+  setScale(QUALITY[t].scale);
+  setGlassRatio(QUALITY[t].glass);
+}
+if (weak) setTier(1);
+
+// dt of each drawn frame; every ~2 s, step down if frames came well slower than the target
+function adapt(dt) {
+  if (tier >= QUALITY.length - 1) return;
+  slowSum += dt;
+  slowN++;
+  if (slowSum < 2000) return;
+  if (slowSum / slowN > 1500 / QUALITY[tier].fps) setTier(tier + 1);
+  slowSum = slowN = 0;
+}
 
 function render() {
   const tNow = performance.now();
@@ -89,7 +118,7 @@ function render() {
   const facing = state.place.lat >= 0 ? -1 : 1;
   const elevN = clamp(s.body.elevation / 55, -0.4, 1);
   const reveal = smooth(0, 2400, tNow - revealStart);
-  const scrolled = clamp(scroll.y / Math.max(1, document.documentElement.scrollHeight - innerHeight), 0, 1);
+  const scrolled = clamp(scroll.y / scrollRange, 0, 1);
   // Low light sits out in the margins; high light glows down from the top edge
   const bodyX = 0.5 + facing * Math.sin(s.body.azimuth * RAD) * 0.48;
   const bodyY = Math.min(0.4 + elevN * 0.95, 1.02) - scrolled * 0.3 - (1 - reveal) * 0.45;
@@ -120,17 +149,20 @@ function render() {
     gl.uniform2f(U.uWind, Math.sin(windRad) * facing, Math.cos(windRad) * 0.3);
     gl.uniform2f(U.uPointer, pointer.sx, pointer.sy);
     gl.uniform2f(U.uColumn, column[0], column[1]);
-    const [rects, alphas] = spots(still ? 1e4 : dt);
+    const [rects, alphas, count] = spots(still ? 1e4 : dt);
     gl.uniform4fv(U.uSpots, rects);
     gl.uniform1fv(U.uSpotA, alphas);
+    gl.uniform1f(U.uSpotN, count);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   } else {
-    // No WebGL: the same sky as a plain gradient
+    // No WebGL: the same sky as a plain gradient, drawn on demand (see start), and set only when it changes
+    // since every change repaints the whole page
     const css = c => `rgb(${c.map(v => Math.round(v * 255)).join(',')})`;
-    root.style.background = `linear-gradient(to bottom, ${css(s.zenith)}, ${css(s.horizon)}) fixed`;
+    const background = `linear-gradient(to bottom, ${css(s.zenith)}, ${css(s.horizon)}) fixed`;
+    if (background !== lastBackground) root.style.background = lastBackground = background;
   }
 
-  if (still) clearGlass();
+  if (still || !program) clearGlass();
   else updateGlass(dt, weather, column, dark, Math.sin(windRad) * facing * Math.min(weather.wind / 40, 1));
 
   if (tNow - lastChip >(state.play || speed !== 1 ? 120 : 10000)) {
@@ -141,6 +173,7 @@ function render() {
     chip.hidden = false;
     requestAnimationFrame(() => chip.classList.add('is-shown'));
   }
+  return dt;
 }
 
 function frame() {
@@ -149,8 +182,10 @@ function frame() {
     render();
     return;
   }
-  render();
   requestAnimationFrame(frame);
+  // Skip screen refreshes until the frame is due (a few ms early is fine, refreshes jitter)
+  if (performance.now() - last < 1000 / QUALITY[tier].fps - 4) return;
+  adapt(render());
 }
 
 export const isRunning = () => running;
@@ -169,7 +204,7 @@ export function refreshChip() {
 }
 
 export function start() {
-  if (reducedQuery.matches || document.hidden || running) {
+  if (!program || reducedQuery.matches || document.hidden || running) {
     invalidate();
     return;
   }

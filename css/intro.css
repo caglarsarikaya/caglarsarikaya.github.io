@@ -115,17 +115,27 @@
 }
 
 .sky-dot {
+  position: relative;
   flex-shrink: 0;
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 50%;
   background: var(--sky-sun, var(--hint));
+}
+
+/* The pulse ring grows with transform and fades with opacity, so it runs on the compositor without repainting */
+.sky-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
   animation: sky-pulse 2.4s ease-out infinite;
 }
 
 @keyframes sky-pulse {
-  from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--sky-sun, var(--hint)) 70%, transparent); }
-  to { box-shadow: 0 0 0 0.65rem transparent; }
+  from { transform: scale(1); opacity: 0.7; }
+  to { transform: scale(3.36); opacity: 0; } /* 0.55rem dot + a 0.65rem ring on each side */
 }
 
 .sky-actions {

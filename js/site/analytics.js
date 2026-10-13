@@ -52,9 +52,11 @@ export function initAnalytics() {
         });
       }
     });
+    // Every milestone sent: nothing left to time
+    if (timeReached.size === timeIntervals.length) clearInterval(timeTimer);
   }
 
-  setInterval(trackTimeOnPage, 5000);
+  const timeTimer = setInterval(trackTimeOnPage, 5000);
 
   // Track outbound link clicks
   document.addEventListener('click', (e) => {
