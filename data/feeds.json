@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-15T10:47:10.961Z",
+  "updated": "2026-10-16T10:35:22.084Z",
   "medium": {
     "latest": [
       {
@@ -41,7 +41,7 @@
         "title": "runway first try",
         "url": "https://www.youtube.com/watch?v=dz5a66VZFBQ",
         "thumbnail": "https://i.ytimg.com/vi/dz5a66VZFBQ/mqdefault.jpg",
-        "views": 3,
+        "views": 6,
         "date": "2026-10-04"
       },
       {
@@ -78,7 +78,7 @@
         "title": "my comminication with ai #programming #gaming",
         "url": "https://www.youtube.com/watch?v=OxgpoM3lqT4",
         "thumbnail": "https://i.ytimg.com/vi/OxgpoM3lqT4/mqdefault.jpg",
-        "views": 307,
+        "views": 310,
         "date": "2025-04-07"
       },
       {
@@ -105,7 +105,7 @@
         "description": "this will be multiplayer floor braking game, I hope I will code this by ai agents",
         "language": "JavaScript",
         "stars": 0,
-        "pushed": "2026-10-14T23:02:24Z"
+        "pushed": "2026-10-15T22:31:24Z"
       },
       {
         "name": "TightropeWalker",
@@ -171,7 +171,7 @@
         "description": "this will be multiplayer floor braking game, I hope I will code this by ai agents",
         "language": "JavaScript",
         "stars": 0,
-        "pushed": "2026-10-14T23:02:24Z"
+        "pushed": "2026-10-15T22:31:24Z"
       },
       {
         "name": "TightropeWalker",
