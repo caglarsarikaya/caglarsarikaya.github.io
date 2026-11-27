@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T16:17:49.401Z",
+  "updated": "2026-11-27T16:01:45.101Z",
   "medium": {
     "latest": [
       {
@@ -146,7 +146,7 @@
         "url": "https://github.com/caglarsarikaya/turkey-geolocations",
         "description": "türkiyedeki tüm illerin, ilçelerin ve mahallelerin listesini bulabilirsiniz. İl ve ilçelerin koordinat bilgileri ve plaka kodları da eklidir.",
         "language": "",
-        "stars": 31,
+        "stars": 30,
         "pushed": "2023-04-25T14:18:45Z"
       },
       {
